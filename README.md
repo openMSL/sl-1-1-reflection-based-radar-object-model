@@ -20,7 +20,7 @@ This is where the magic happens.
 The `apply()` function of the strategy is called by the `do_calc()` function of the Framework.
 There are four subsequent strategies as shown in the image below.
 
-<img src="https://gitlab.com/tuda-fzd/perception-sensor-modeling/reflection-based-radar-object-model/uploads/904bcd34c71e5bab8baabebb1e04649d/" width="800" />
+<img src="https://gitlab.com/tuda-fzd/perception-sensor-modeling/reflection-based-radar-object-model/uploads/904bcd34c71e5bab8baabebb1e04649d/OSMP_framework.JPG" width="800" />
 
 ### Modeling of FFT and windowing processing by [Fouriertracing](https://tuprints.ulb.tu-darmstadt.de/17545/1/Dissertation_Martin_Holder_2021.pdf)
 
