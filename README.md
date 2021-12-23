@@ -20,7 +20,7 @@ This is where the magic happens.
 The `apply()` function of the strategy is called by the `do_calc()` function of the Framework.
 There are four subsequent strategies as shown in the image below.
 
-<img src="https://gitlab.com/tuda-fzd/perception-sensor-modeling/" width="800" />
+<img src="https://gitlab.com/tuda-fzd/perception-sensor-modeling/reflection-based-radar-object-model/uploads/904bcd34c71e5bab8baabebb1e04649d/" width="800" />
 
 ### Modeling of FFT and windowing processing by [Fouriertracing](https://tuprints.ulb.tu-darmstadt.de/17545/1/Dissertation_Martin_Holder_2021.pdf)
 
@@ -32,9 +32,9 @@ The general process is visualized by the following pictures.
 On the left side the smearing of the delta-peak into the adjacent bins due to the window function is shown.
 The picture on the right side visualizes the superposition of two different delta-peaks based on a varying bin distance.
 
-<img src="https://gitlab.com/tuda-fzd/perception-sensor-modeling/delta_peak.gif" width="400" />
+<img src="https://gitlab.com/tuda-fzd/perception-sensor-modeling/reflection-based-radar-object-model/uploads/a69177d08739ac09b749048685e587d1/delta_peak.gif" width="400" />
 
-<img src="https://gitlab.com/tuda-fzd/perception-sensor-modeling/multiple_delta_peaks.gif" width="400" />
+<img src="https://gitlab.com/tuda-fzd/perception-sensor-modeling/reflection-based-radar-object-model/uploads/d983f7697694846f28ee2e4721c32724/multiple_delta_peaks.gif" width="400" />
 
 Afterwards an OS-CFAR peak detection is applied to the cuboid.
 The output of the DetectionSensing is an osi3::RadarDetection message.<br><br>
