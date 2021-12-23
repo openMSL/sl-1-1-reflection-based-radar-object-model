@@ -97,7 +97,7 @@ endforeach()
 
 file(READ strategies/csv_output_sequence.conf csv_output_strategies)
 if(csv_output_strategies)
-    message("---> Configuring .csv output strategies from csv_output_sequence.conf")
+message("---> Configuring .csv output strategies from csv_output_sequence.conf")
     string(REPLACE "\n" ";" csv_output_strategies ${csv_output_strategies})
     foreach(strategy ${csv_output_strategies})
         if(IS_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/strategies/${strategy})
@@ -111,7 +111,7 @@ endif()
 
 file(READ strategies/pcd_output_sequence.conf pcd_output_strategies)
 if(pcd_output_strategies)
-    message("---> Configuring .pcd output strategies from pcd_output_sequence.conf")
+message("---> Configuring .pcd output strategies from pcd_output_sequence.conf")
     string(REPLACE "\n" ";" pcd_output_strategies ${pcd_output_strategies})
     foreach(strategy ${pcd_output_strategies})
         if(IS_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/strategies/${strategy})
@@ -123,82 +123,82 @@ if(pcd_output_strategies)
     endforeach()
 endif()
 
-if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-    file(READ strategies/ros_output_sequence.conf ros_output_strategies)
-    if(ros_output_strategies)
-        message("---> Configuring ROS output strategies from ros_output_sequence.conf")
-        string(REPLACE "\n" ";" ros_output_strategies ${ros_output_strategies})
-
-        ### find our os (wins, centos, ubuntu, etc)
-        set(VAR_OS "")
-        if(CMAKE_SYSTEM_NAME MATCHES "Linux")
-            message("Found OS for ROS-output-strategies: Linux")
-            set(AVAILABLE_ROS_VERSIONS "noetic;melodic")
-            set(ROS_FOUND FALSE)
-            foreach(version ${AVAILABLE_ROS_VERSIONS})
-                if(NOT ROS_FOUND)
-                    if(EXISTS /opt/ros/${version}/)
-                        message("Found ROS version ${version}")
-                        set(FOUND_ROS_DISTRO ${version})
-                        set(ROS_FOUND TRUE)
-                    endif()
+if (${CMAKE_SYSTEM_NAME} MATCHES "Linux") # Windows support for ROS output strategies currrently under developement!
+file(READ strategies/ros_output_sequence.conf ros_output_strategies)
+if(ros_output_strategies)
+    message("---> Configuring ROS output strategies from ros_output_sequence.conf")
+    string(REPLACE "\n" ";" ros_output_strategies ${ros_output_strategies})
+            
+    ### find our os (wins, centos, ubuntu, etc)
+    set(VAR_OS "")
+    if(CMAKE_SYSTEM_NAME MATCHES "Linux")
+        message("Found OS for ROS-output-strategies: Linux")
+        set(AVAILABLE_ROS_VERSIONS "noetic;melodic")
+        set(ROS_FOUND FALSE)
+        foreach(version ${AVAILABLE_ROS_VERSIONS})
+            if(NOT ROS_FOUND)
+                if(EXISTS /opt/ros/${version}/)
+                    message("Found ROS version ${version}")
+                    set(FOUND_ROS_DISTRO ${version})
+                    set(ROS_FOUND TRUE)
                 endif()
-            endforeach()
-
-            if(ROS_FOUND)
-                if(FOUND_ROS_DISTRO MATCHES "noetic")
-                    list(APPEND CMAKE_PREFIX_PATH /opt/ros/noetic/)
-                    set(PYTHONPATH /opt/ros/noetic/lib/python3/dist-packages)
-                elseif(FOUND_ROS_DISTRO MATCHES "melodic")
-                    list(APPEND CMAKE_PREFIX_PATH /opt/ros/melodic/)
-                    set(PYTHONPATH /opt/ros/melodic/lib/python2.7/dist-packages)
-                    message("Hi")
-                endif()
-            else()
-                message("ROS distro is unknown!")
-            endif()
-        elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
-            message("Found OS for ROS-output-strategies: Windows")
-            set(VAR_OS "wins")
-            set(PYTHON_EXECUTABLE           C:/Python310/python.exe) # Or wherever Python is located
-            list(APPEND CMAKE_PREFIX_PATH   C:/opt/ros/noetic/x64/) # Or wherever ROS is located
-            set(PCL_COMMON_LIBRARY          C:/opt/ros/noetic/x64/lib) # Or wherever PCL common libs are located
-            set(PCL_COMMON_INCLUDE_DIR      C:/opt/ros/noetic/x64/include/pcl/common) # Or wherever PCL common includes are located
-            set(BOOST_INCLUDEDIR            C:/opt/ros/noetic/x64/include/boost) # Or wherever Boost includes are located
-        else()
-            message(FATAL "No OS detected!")
-        endif()
-
-        #set(CATKIN_ENABLE_TESTING OFF CACHE BOOL "Let catkin create tests" FORCE)
-        find_package(catkin REQUIRED COMPONENTS
-                roscpp
-                rospy
-                std_msgs
-                geometry_msgs
-                message_generation
-                tf
-                )
-
-        # see here: https://github.com/PointCloudLibrary/pcl/issues/3680
-        # when this is fixed, we can remove the following 3 lines.
-        if(NOT DEFINED CMAKE_SUPPRESS_DEVELOPER_WARNINGS)
-            set(CMAKE_SUPPRESS_DEVELOPER_WARNINGS 1 CACHE INTERNAL "No dev warnings")
-        endif()
-        find_package(PCL REQUIRED COMPONENTS common)
-
-        if(CMAKE_SYSTEM_NAME MATCHES "Windows")
-            string(APPEND PCL_COMMON_LIBRARIES /pcl_common_release.lib)
-        endif()
-
-        foreach(strategy ${ros_output_strategies})
-            if(IS_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/strategies/${strategy})
-                message("Found strategy ${strategy}")
-                add_subdirectory(strategies/${strategy})
-            else()
-                message(FATAL_ERROR "Invalid strategy defined: ${strategy}")
             endif()
         endforeach()
+        
+        if(ROS_FOUND)
+            if(FOUND_ROS_DISTRO MATCHES "noetic")
+                list(APPEND CMAKE_PREFIX_PATH /opt/ros/noetic/)
+                set(PYTHONPATH /opt/ros/noetic/lib/python3/dist-packages)
+            elseif(FOUND_ROS_DISTRO MATCHES "melodic")
+                list(APPEND CMAKE_PREFIX_PATH /opt/ros/melodic/)
+                set(PYTHONPATH /opt/ros/melodic/lib/python2.7/dist-packages)
+                message("Hi")
+            endif()
+        else()
+            message("ROS distro is unknown!")
+        endif()
+    elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
+        message("Found OS for ROS-output-strategies: Windows")
+        set(VAR_OS "wins")
+        set(PYTHON_EXECUTABLE           C:/Python310/python.exe) # Or wherever Python is located
+        list(APPEND CMAKE_PREFIX_PATH   C:/opt/ros/noetic/x64/) # Or wherever ROS is located
+        set(PCL_COMMON_LIBRARY          C:/opt/ros/noetic/x64/lib) # Or wherever PCL common libs are located
+        set(PCL_COMMON_INCLUDE_DIR      C:/opt/ros/noetic/x64/include/pcl/common) # Or wherever PCL common includes are located
+        set(BOOST_INCLUDEDIR            C:/opt/ros/noetic/x64/include/boost) # Or wherever Boost includes are located
+    else()
+        message(FATAL "No OS detected!")
     endif()
+    
+    #set(CATKIN_ENABLE_TESTING OFF CACHE BOOL "Let catkin create tests" FORCE)
+    find_package(catkin REQUIRED COMPONENTS
+        roscpp
+        rospy
+        std_msgs
+        geometry_msgs
+        message_generation
+        tf
+    )
+
+    # see here: https://github.com/PointCloudLibrary/pcl/issues/3680
+    # when this is fixed, we can remove the following 3 lines.
+    if(NOT DEFINED CMAKE_SUPPRESS_DEVELOPER_WARNINGS)
+        set(CMAKE_SUPPRESS_DEVELOPER_WARNINGS 1 CACHE INTERNAL "No dev warnings")
+    endif()
+    find_package(PCL REQUIRED COMPONENTS common)
+
+    if(CMAKE_SYSTEM_NAME MATCHES "Windows")
+        string(APPEND PCL_COMMON_LIBRARIES /pcl_common_release.lib)
+    endif()
+
+    foreach(strategy ${ros_output_strategies})
+        if(IS_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/strategies/${strategy})
+            message("Found strategy ${strategy}")
+            add_subdirectory(strategies/${strategy})
+        else()
+            message(FATAL_ERROR "Invalid strategy defined: ${strategy}")
+        endif()
+    endforeach()
+endif()
 endif()
 
 # Lists items are separated by a semicolon, replace with newline
