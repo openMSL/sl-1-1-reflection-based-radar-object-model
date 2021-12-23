@@ -1,4 +1,4 @@
-[![pipeline status](https://gitlab.com/tuda-fzd/perception-sensor-modeling/reflection-based-radar-object-model/badges/master/pipeline.svg)](https://gitlab.com/tuda-fzd/perception-sensor-modeling/reflection-based-radar-object-model/-/commits/master) 
+[![pipeline status](https://gitlab.com/tuda-fzd/perception-sensor-modeling/reflection-based-radar-object-model/badges/main/pipeline.svg)](https://gitlab.com/tuda-fzd/perception-sensor-modeling/reflection-based-radar-object-model/-/commits/main)
 # Reflection Based Radar Object Model
 
 <img align="right" src="https://gitlab.com/tuda-fzd/perception-sensor-modeling/object-based-generic-perception-object-model/uploads/17c84e9ec0acf0fac2e35855f038ad0b/fzdlogo.jpg" width="100" />
