@@ -79,12 +79,7 @@ void PointcloudFusion::calculate_fused_pointcloud_for_given_lidar_sensors(Sensor
 
             auto current_logical_detection = sensor_data.mutable_logical_detection_data()->add_logical_detection();
             current_logical_detection->mutable_position()->CopyFrom(point_cartesian_in_ego_coordinates);
-            if (sensor_data.feature_data().lidar_sensor(sensor_idx).detection(detection_no).has_intensity()) {
-                current_logical_detection->set_intensity(sensor_data.feature_data().lidar_sensor(sensor_idx).detection(detection_no).intensity());
-            }
-            else if (sensor_data.feature_data().lidar_sensor(sensor_idx).detection(detection_no).has_echo_pulse_width()) {
-                current_logical_detection->set_echo_pulse_width(sensor_data.feature_data().lidar_sensor(sensor_idx).detection(detection_no).echo_pulse_width()); //TODO: Field for echo pulse width within logical detections not existing, yet
-            }
+            current_logical_detection->set_intensity(sensor_data.feature_data().lidar_sensor(sensor_idx).detection(detection_no).intensity());
         }
     }
 }
