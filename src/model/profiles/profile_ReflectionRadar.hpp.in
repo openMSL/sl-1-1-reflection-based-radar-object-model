@@ -1,0 +1,80 @@
+//
+// Copyright Institute of Automotive Engineering
+// of Technical University of Darmstadt 2020.
+// Licensed under the EUPL-1.2-or-later
+//
+// This work covered by the EUPL can be used/merged and distributed
+// in other works covered by GPL-2.0, GPL-3.0, LGPL, AGPL, CeCILL,
+// OSL, EPL, MPL and other licences listed as compatible in the EUPL
+// Appendix. This applies to the other (combined) work, while the
+// original project stays covered by the EUPL without re-licensing.
+//
+// Alternatively, the contents of this file may be used under the
+// terms of the Mozilla Public License, v. 2.0. If a copy of the MPL
+// was not distributed with this file, you can obtain one at
+// http://mozilla.org/MPL/2.0/.
+//
+
+#ifndef Speed_of_Light
+    #define Speed_of_Light 299792458
+#endif
+
+#ifndef _USE_MATH_DEFINES
+    #define _USE_MATH_DEFINES
+#endif
+
+#include <iostream>
+#ifdef _WIN32
+    #include <math.h>
+#else
+    #include <cmath>
+#endif
+
+
+
+
+namespace model::profile::ReflectionRadar {
+
+    Profile generate() {
+        Profile ReflectionRadar;
+
+        const uint32_t antenna_diagram_discretization = 181;
+        std::vector<uint32_t> max_min_angle_azimuth{-90.0, 90.0};
+        std::vector<uint32_t> max_min_angle_elevation{-90.0, 90.0};
+        std::vector<double> antenna_diagram_azimuth_response{1.05534e-36,5.91497e-36,3.16238e-35,1.60677e-34,7.71690e-34,3.47593e-33,1.45082e-32,5.50281e-32,1.83179e-31,4.98406e-31,9.19682e-31,4.65680e-31,3.17951e-30,1.24936e-28,1.59757e-27,1.41948e-26,1.03925e-25,6.70238e-25,3.93566e-24,2.14402e-23,1.09624e-22,5.30094e-22,2.43684e-21,1.06883e-20,4.48449e-20,1.80307e-19,6.95542e-19,2.57603e-18,9.16245e-18,3.12931e-17,1.02570e-16,3.22322e-16,9.69557e-16,2.78537e-15,7.61753e-15,1.97410e-14,4.81560e-14,1.09473e-13,2.28280e-13,4.25013e-13,6.70907e-13,7.96527e-13,4.71687e-13,2.49285e-14,5.27719e-12,4.71826e-11,2.48706e-10,1.02771e-09,3.66061e-09,1.17379e-08,3.46865e-08,9.57998e-08,2.49529e-07,6.16689e-07,1.45221e-06,3.26809e-06,7.04319e-06,1.45569e-05,2.88791e-05,5.50178e-05,1.00657e-04,1.76785e-04,2.97818e-04,4.80604e-04,7.41487e-04,1.09065e-03,1.52339e-03,2.00911e-03,2.48091e-03,2.83135e-03,2.92323e-03,2.62654e-03,1.89232e-03,8.69773e-04,6.25559e-05,5.03722e-04,3.90968e-03,1.27558e-02,3.02084e-02,5.98574e-02,1.05224e-01,1.69075e-01,2.52627e-01,3.54810e-01,4.71764e-01,5.96742e-01,7.20562e-01,8.32585e-01,9.22115e-01,9.79982e-01,1.00000e+00,9.79982e-01,9.22115e-01,8.32585e-01,7.20562e-01,5.96742e-01,4.71764e-01,3.54810e-01,2.52627e-01,1.69075e-01,1.05224e-01,5.98574e-02,3.02084e-02,1.27558e-02,3.90968e-03,5.03722e-04,6.25559e-05,8.69773e-04,1.89232e-03,2.62654e-03,2.92323e-03,2.83135e-03,2.48091e-03,2.00911e-03,1.52339e-03,1.09065e-03,7.41487e-04,4.80604e-04,2.97818e-04,1.76785e-04,1.00657e-04,5.50178e-05,2.88791e-05,1.45569e-05,7.04319e-06,3.26809e-06,1.45221e-06,6.16689e-07,2.49529e-07,9.57998e-08,3.46865e-08,1.17379e-08,3.66061e-09,1.02771e-09,2.48706e-10,4.71826e-11,5.27719e-12,2.49285e-14,4.71687e-13,7.96527e-13,6.70907e-13,4.25013e-13,2.28280e-13,1.09473e-13,4.81560e-14,1.97410e-14,7.61753e-15,2.78537e-15,9.69557e-16,3.22322e-16,1.02570e-16,3.12931e-17,9.16245e-18,2.57603e-18,6.95542e-19,1.80307e-19,4.48449e-20,1.06883e-20,2.43684e-21,5.30094e-22,1.09624e-22,2.14402e-23,3.93566e-24,6.70238e-25,1.03925e-25,1.41948e-26,1.59757e-27,1.24936e-28,3.17951e-30,4.65680e-31,9.19682e-31,4.98406e-31,1.83179e-31,5.50281e-32,1.45082e-32,3.47593e-33,7.71690e-34,1.60677e-34,3.16238e-35,5.91497e-36,1.0553e-36};
+        std::vector<double> antenna_diagram_elevation_response{1.05534e-36,5.91497e-36,3.16238e-35,1.60677e-34,7.71690e-34,3.47593e-33,1.45082e-32,5.50281e-32,1.83179e-31,4.98406e-31,9.19682e-31,4.65680e-31,3.17951e-30,1.24936e-28,1.59757e-27,1.41948e-26,1.03925e-25,6.70238e-25,3.93566e-24,2.14402e-23,1.09624e-22,5.30094e-22,2.43684e-21,1.06883e-20,4.48449e-20,1.80307e-19,6.95542e-19,2.57603e-18,9.16245e-18,3.12931e-17,1.02570e-16,3.22322e-16,9.69557e-16,2.78537e-15,7.61753e-15,1.97410e-14,4.81560e-14,1.09473e-13,2.28280e-13,4.25013e-13,6.70907e-13,7.96527e-13,4.71687e-13,2.49285e-14,5.27719e-12,4.71826e-11,2.48706e-10,1.02771e-09,3.66061e-09,1.17379e-08,3.46865e-08,9.57998e-08,2.49529e-07,6.16689e-07,1.45221e-06,3.26809e-06,7.04319e-06,1.45569e-05,2.88791e-05,5.50178e-05,1.00657e-04,1.76785e-04,2.97818e-04,4.80604e-04,7.41487e-04,1.09065e-03,1.52339e-03,2.00911e-03,2.48091e-03,2.83135e-03,2.92323e-03,2.62654e-03,1.89232e-03,8.69773e-04,6.25559e-05,5.03722e-04,3.90968e-03,1.27558e-02,3.02084e-02,5.98574e-02,1.05224e-01,1.69075e-01,2.52627e-01,3.54810e-01,4.71764e-01,5.96742e-01,7.20562e-01,8.32585e-01,9.22115e-01,9.79982e-01,1.00000e+00,9.79982e-01,9.22115e-01,8.32585e-01,7.20562e-01,5.96742e-01,4.71764e-01,3.54810e-01,2.52627e-01,1.69075e-01,1.05224e-01,5.98574e-02,3.02084e-02,1.27558e-02,3.90968e-03,5.03722e-04,6.25559e-05,8.69773e-04,1.89232e-03,2.62654e-03,2.92323e-03,2.83135e-03,2.48091e-03,2.00911e-03,1.52339e-03,1.09065e-03,7.41487e-04,4.80604e-04,2.97818e-04,1.76785e-04,1.00657e-04,5.50178e-05,2.88791e-05,1.45569e-05,7.04319e-06,3.26809e-06,1.45221e-06,6.16689e-07,2.49529e-07,9.57998e-08,3.46865e-08,1.17379e-08,3.66061e-09,1.02771e-09,2.48706e-10,4.71826e-11,5.27719e-12,2.49285e-14,4.71687e-13,7.96527e-13,6.70907e-13,4.25013e-13,2.28280e-13,1.09473e-13,4.81560e-14,1.97410e-14,7.61753e-15,2.78537e-15,9.69557e-16,3.22322e-16,1.02570e-16,3.12931e-17,9.16245e-18,2.57603e-18,6.95542e-19,1.80307e-19,4.48449e-20,1.06883e-20,2.43684e-21,5.30094e-22,1.09624e-22,2.14402e-23,3.93566e-24,6.70238e-25,1.03925e-25,1.41948e-26,1.59757e-27,1.24936e-28,3.17951e-30,4.65680e-31,9.19682e-31,4.98406e-31,1.83179e-31,5.50281e-32,1.45082e-32,3.47593e-33,7.71690e-34,1.60677e-34,3.16238e-35,5.91497e-36,1.0553e-36};
+
+        ReflectionRadar.sensor_view_configuration.mutable_update_cycle_time()->set_seconds(0);
+        ReflectionRadar.sensor_view_configuration.mutable_update_cycle_time()->set_nanos(80000000);
+        ReflectionRadar.sensor_view_configuration.set_range(250);
+        ReflectionRadar.sensor_view_configuration.set_field_of_view_horizontal(180 / 180 * M_PI);
+        ReflectionRadar.sensor_view_configuration.set_field_of_view_vertical(180 / 180 * M_PI);
+        ReflectionRadar.sensor_view_configuration.mutable_mounting_position()->mutable_position()->set_x(0.0);
+        ReflectionRadar.sensor_view_configuration.mutable_mounting_position()->mutable_position()->set_y(0.0);
+        ReflectionRadar.sensor_view_configuration.mutable_mounting_position()->mutable_position()->set_z(0.0);
+        ReflectionRadar.sensor_view_configuration.mutable_mounting_position()->mutable_orientation()->set_roll(0.0 / 180 * M_PI);
+        ReflectionRadar.sensor_view_configuration.mutable_mounting_position()->mutable_orientation()->set_pitch(0.0 / 180 * M_PI);
+        ReflectionRadar.sensor_view_configuration.mutable_mounting_position()->mutable_orientation()->set_yaw(0.0 / 180 * M_PI);
+
+        auto radar_sensor_view_configuration = ReflectionRadar.sensor_view_configuration.add_radar_sensor_view_configuration();
+        radar_sensor_view_configuration->mutable_mounting_position()->mutable_position()->set_x(3);
+        radar_sensor_view_configuration->mutable_mounting_position()->mutable_position()->set_y(0.0);
+        radar_sensor_view_configuration->mutable_mounting_position()->mutable_position()->set_z(0.5);
+        radar_sensor_view_configuration->mutable_mounting_position()->mutable_orientation()->set_roll(0.0);
+        radar_sensor_view_configuration->mutable_mounting_position()->mutable_orientation()->set_pitch(0.0);
+        radar_sensor_view_configuration->mutable_mounting_position()->mutable_orientation()->set_yaw(0.0);
+        radar_sensor_view_configuration->set_emitter_frequency(77e09);
+
+        for (int antenna_diagram_azimuth_idx = max_min_angle_azimuth[0]; antenna_diagram_azimuth_idx < antenna_diagram_discretization; antenna_diagram_azimuth_idx++){
+            for (int antenna_diagram_elevation_idx = max_min_angle_elevation[0]; antenna_diagram_elevation_idx < antenna_diagram_discretization; antenna_diagram_elevation_idx++){
+                auto current_tx_antenna_diagram_entry = radar_sensor_view_configuration->add_tx_antenna_diagram();
+                current_tx_antenna_diagram_entry->set_vertical_angle(antenna_diagram_elevation_idx / 180 * M_PI);
+                current_tx_antenna_diagram_entry->set_horizontal_angle(antenna_diagram_azimuth_idx / 180 * M_PI);
+                current_tx_antenna_diagram_entry->set_response(antenna_diagram_azimuth_response[antenna_diagram_azimuth_idx] * antenna_diagram_elevation_response[antenna_diagram_elevation_idx]);
+
+                auto current_rx_antenna_diagram_entry = radar_sensor_view_configuration->add_rx_antenna_diagram();
+                current_rx_antenna_diagram_entry->set_vertical_angle(antenna_diagram_elevation_idx / 180 * M_PI);
+                current_rx_antenna_diagram_entry->set_horizontal_angle(antenna_diagram_azimuth_idx / 180 * M_PI);
+                current_rx_antenna_diagram_entry->set_response(antenna_diagram_azimuth_response[antenna_diagram_azimuth_idx] * antenna_diagram_elevation_response[antenna_diagram_elevation_idx]);
+            }
+        }
