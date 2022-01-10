@@ -8,6 +8,8 @@ It is a highly parameterizable sensor system model including detection calculati
 The model received radar reflection data calculated in a simulation tool beforehand e.g. with ray tracing.
 The model outputs are radar detections and detected moving objects.<br><br>
 
+<img src="https://gitlab.com/tuda-fzd/perception-sensor-modeling/reflection-based-radar-object-model/uploads/7eb34211a2110bacdaa00afe7af2d0e6/Radarmodell.gif" width="800" />
+
 ## Modeling Approach
 
 ### Modeling Framework
