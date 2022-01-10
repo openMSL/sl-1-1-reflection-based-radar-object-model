@@ -273,8 +273,8 @@ float correct_windowing_bias_interpolation_range(radar_cuboid &cube, size_t r, s
     float next_pow;
     float prev_pow;
     float sub_bin_correction;
-    __uint8_t lu_step_cnt = 0;
-    __int8_t isNext;
+    uint8_t lu_step_cnt = 0;
+    int8_t isNext;
     // Get maximum neighbour of the CUT in range-dimension, thereby check if CUT is at beginning or end of spectrum.
     // If at beginning or end only direct neighbour is considered.
     if (r == 0) {
@@ -345,8 +345,8 @@ correct_windowing_bias_interpolation_doppler(radar_cuboid &cube, size_t r, size_
     float next_pow;
     float prev_pow;
     float sub_bin_correction;
-    __uint8_t lu_step_cnt = 0;
-    __int8_t isNext;
+    uint8_t lu_step_cnt = 0;
+    int8_t isNext;
     // get maximum neighbour of the CUT in doppler-dimension, thereby check if CUT is at beginning or end of
     // spectrum. If this is the case, check for maximum neighbour on the other side of the spectrum.
     if (d == 0) {
@@ -430,8 +430,8 @@ correct_windowing_bias_interpolation_beam(radar_cuboid &cube, size_t r, size_t d
     float next_pow;
     float prev_pow;
     float sub_bin_correction;
-    __uint8_t lu_step_cnt = 0;
-    __int8_t isNext;
+    uint8_t lu_step_cnt = 0;
+    int8_t isNext;
     // get maximum neighbour of the CUT in beam-dimension, thereby check if CUT is at beginning or end of
     // spectrum. If this is the case, check for maximum neighbour on the other side of the spectrum.
     if (b == 0) {
