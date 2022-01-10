@@ -250,8 +250,8 @@ void DetectionSensing::apply(SensorData &sensor_data) {
                 }
                 /// CFAR Peakdetection
                 for (size_t r = 0; r < number_range_bin; ++r) {
-                    float doppler_vec[number_doppler_bin];
-                    memset(doppler_vec, 0, sizeof(doppler_vec));
+                    std::vector<float> doppler_vec(number_doppler_bin);
+                    //memset(doppler_vec, 0, sizeof(doppler_vec));
                     for (size_t d = 0; d < number_doppler_bin; ++d) {
                         for (size_t b = 0; b < number_azimuth_bin; ++b) {
                             float power = get_cube_power_at(radar_cuboid, r, d, b);
