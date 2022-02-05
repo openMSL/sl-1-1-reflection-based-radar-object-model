@@ -73,7 +73,7 @@ void PointcloudFusion::calculate_fused_pointcloud_for_given_lidar_sensors(Sensor
             point_cartesian_sensor.set_x(distance * cos(elevation) * cos(azimuth));
             point_cartesian_sensor.set_y(distance * cos(elevation) * sin(azimuth));
             point_cartesian_sensor.set_z(distance * sin(elevation));
-            Vector3d point_cartesian_in_ego_coordinates = TransformationFunctions::transform_from_local_coordinates(point_cartesian_sensor,
+            Vector3d point_cartesian_in_ego_coordinates = TF::transform_from_local_coordinates(point_cartesian_sensor,
                                                                                                                     sensor_data.feature_data().lidar_sensor(sensor_idx).header().mounting_position().orientation(),
                                                                                                                     sensor_data.feature_data().lidar_sensor(sensor_idx).header().mounting_position().position());
 
@@ -98,7 +98,7 @@ void PointcloudFusion::calculate_fused_pointcloud_for_given_radar_sensors(Sensor
             point_cartesian_sensor.set_x(distance * cos(elevation) * cos(azimuth));
             point_cartesian_sensor.set_y(distance * cos(elevation) * sin(azimuth));
             point_cartesian_sensor.set_z(distance * sin(elevation));
-            Vector3d point_cartesian_in_ego_coordinates = TransformationFunctions::transform_from_local_coordinates(point_cartesian_sensor,
+            Vector3d point_cartesian_in_ego_coordinates = TF::transform_from_local_coordinates(point_cartesian_sensor,
                                                                                                                     sensor_data.feature_data().radar_sensor(sensor_idx).header().mounting_position().orientation(),
                                                                                                                     sensor_data.feature_data().radar_sensor(sensor_idx).header().mounting_position().position());
 
