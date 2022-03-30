@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<srmd:SimulationResourceMetaData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://apps.pmsf.net/STMD/SimulationResourceMetaData SRMD.xsd"
+    xmlns:srmd="http://apps.pmsf.net/STMD/SimulationResourceMetaData"
+    version="0.5" name="Reflection Radar Meta-Data">
+    <Classification xmlns="http://apps.pmsf.net/SSPTraceability/SSPTraceabilityCommon" type="de.setlevel.srmd.model-meta-data">
+        <!-- Sensor related information -->
+        <ClassificationEntry keyword="model.type">sensor</ClassificationEntry>
+        <ClassificationEntry keyword="sensor.manufacturer"></ClassificationEntry>
+        <ClassificationEntry keyword="sensor.family"></ClassificationEntry>
+        <ClassificationEntry keyword="sensor.name">Reflection Radar</ClassificationEntry>
+        <ClassificationEntry keyword="sensor.version"></ClassificationEntry>
+        <ClassificationEntry keyword="sensor.manufacturer.partnumber"></ClassificationEntry>
+        <ClassificationEntry keyword="sensor.type">detection-output, object-output</ClassificationEntry>
+        <ClassificationEntry keyword="sensor.technology">radar</ClassificationEntry>
+        <ClassificationEntry keyword="sensor.technology.variant">long-range</ClassificationEntry>
+        <!-- Model related information -->
+        <ClassificationEntry keyword="model.manufacturer">Technische Universität Darmstadt - Fachgebiet Fahrzeugtechnik (FZD)</ClassificationEntry>
+        <ClassificationEntry keyword="model.family">Perception Sensor Model</ClassificationEntry>
+        <ClassificationEntry keyword="model.name">Reflection Based Radar Object Model</ClassificationEntry>
+        <ClassificationEntry keyword="model.version">1.0</ClassificationEntry>
+        <ClassificationEntry keyword="model.releasedate">2021-12-23</ClassificationEntry>
+        <ClassificationEntry keyword="model.status">Open Source</ClassificationEntry>
+        <ClassificationEntry keyword="model.guid">61190093c5e2fcd2dbc967177fac1a7404be9785 on https://gitlab.com/tuda-fzd/perception-sensor-modeling/reflection-based-radar-object-model/</ClassificationEntry>
+        <ClassificationEntry keyword="model.purpose">Radar model to convert a ray tracing output into a detection and object output.</ClassificationEntry>
+        
+        <ClassificationEntry keyword="model.modelling-approach">Sensor model is purely reflection based and uses the fourier tracing approach by Martin F. Holder. Weather and noise effects are not modelled.</ClassificationEntry>
+        <ClassificationEntry keyword="model.preconditions">RadarSensorView::Reflections input contains accurate time of flight, doppler shift, azimuth and intensity</ClassificationEntry>
+        <ClassificationEntry keyword="model.validity-range">No specification possible</ClassificationEntry>
+        <ClassificationEntry keyword="model.specification">See REEDME.md in Model folder</ClassificationEntry>
+        <ClassificationEntry keyword="model.verification.status">false</ClassificationEntry>
+        <ClassificationEntry keyword="model.verification.report"></ClassificationEntry>
+        <ClassificationEntry keyword="model.validation.concept"></ClassificationEntry>
+        <ClassificationEntry keyword="model.validation.status">false</ClassificationEntry>
+        <ClassificationEntry keyword="model.validation.platform"></ClassificationEntry>
+        <ClassificationEntry keyword="model.validation.report"></ClassificationEntry>
+        <ClassificationEntry keyword="model.limitations">The model is intended to be used as an OSI FMU in a Co-Simulation setup.
+            The model is not validated; thus it is not intended to be used for validation or verification of any sensor.
+            
+            This delivery is not developed according to process defined in ISO 26262 (Standard for Functional Safety).
+        </ClassificationEntry>
+        
+        <!-- Model implementation related information -->
+        <ClassificationEntry keyword="model.implementation.format">OSMP 1.0/OSI 3.4.0/FMI 2.0</ClassificationEntry>
+        <ClassificationEntry keyword="model.implementation.preconditions"></ClassificationEntry>
+        <ClassificationEntry keyword="model.implementation.performance-characteristics">Not real time capable</ClassificationEntry>
+        
+        <ClassificationEntry keyword="model.integration.requirements">See REEDME.md in Model folder</ClassificationEntry>
+        
+    </Classification>
+</srmd:SimulationResourceMetaData>
