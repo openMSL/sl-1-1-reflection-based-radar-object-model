@@ -1,4 +1,5 @@
 //
+// Copyright Dr.-Ing. Martin Holder, Lukas Elster M. Sc.
 // Institute of Automotive Engineering
 // of Technical University of Darmstadt, 2021.
 // Licensed under the EUPL-1.2-or-later
@@ -46,6 +47,7 @@ using namespace osi3;
 
 void DetectionSensing::apply(SensorData &sensor_data) {
     log("Starting Radar Sensor Model");
+
 
     if (sensor_data.sensor_view().size() > 0) {
         auto no_of_radar_sensors = sensor_data.sensor_view(0).radar_sensor_view_size();
@@ -97,19 +99,13 @@ void DetectionSensing::apply(SensorData &sensor_data) {
                 auto power_threshold = profile.detection_sensing_parameters.power_threshold;
                 auto num_peaks_max = profile.detection_sensing_parameters.num_peaks_max;
                 auto rcs_calibration = profile.detection_sensing_parameters.rcs_calibration;
-
                 /// Initialize additional variables
                 std::vector<float> complex_signal_strength(2);
                 std::vector<float> complex_signal_strength_sum(2);
                 float wavelength = Speed_of_Light / emitter_frequency;
 
                 /// Reserve memory for the radar cuboid to prevent re-allocations at every complex signal strength iteration
-                type_radar_cuboid radar_cuboid(number_range_bin,
-                                               std::vector<std::vector<std::vector<float> > >(number_doppler_bin,
-                                                                                              std::vector<std::vector<float> >(
-                                                                                                      number_azimuth_bin,
-                                                                                                      std::vector<float>(
-                                                                                                              2))));
+                type_radar_cuboid radar_cuboid (number_range_bin, std::vector<std::vector<std::vector<std::vector<float> > > >(number_doppler_bin, std::vector<std::vector<std::vector<float> > >(number_azimuth_bin, std::vector<std::vector<float> >(number_elevation_bin, std::vector<float>(2)))));
 
                 /// Run through all reflections and append valid ones to the radar cuboid
                 for (uint64_t reflection_idx = 0; reflection_idx < no_of_reflections; reflection_idx++) {
@@ -164,7 +160,7 @@ void DetectionSensing::apply(SensorData &sensor_data) {
                                     static_cast<float>(fabs(sin(azimuth_angle) / azimuth_resolution)),
                                     (float) number_azimuth_bin)));
                             azimuth_window = static_cast<int>(
-                                    static_cast<float>(size(azimuth_window_function) + 1) / 2 +
+                                    static_cast<float>(size(azimuth_window_function) + 1) / 2 -
                                     round(azimuth_bin_decimal * window_data_per_bin));
                         } else {
                             azimuth_signum = -1;
@@ -172,8 +168,32 @@ void DetectionSensing::apply(SensorData &sensor_data) {
                                     fmodf(static_cast<float>(fabs(sin(azimuth_angle) / azimuth_resolution)),
                                           number_azimuth_bin)));
                             azimuth_window = static_cast<int>(
-                                    static_cast<float>(size(azimuth_window_function) + 1) / 2 -
+                                    static_cast<float>(size(azimuth_window_function) + 1) / 2 +
                                     round(azimuth_bin_decimal * window_data_per_bin));
+                        }
+
+                        /// Elevation calculation in bins
+                        int elevation_bin = 0;
+                        int elevation_signum;
+                        int elevation_window;
+                        float elevation_bin_decimal = static_cast<float>(sin(elevation_angle) / elevation_resolution -
+                                                                         floor(sin(elevation_angle) / elevation_resolution));
+                        if (elevation_angle > 0) {
+                            elevation_signum = 1;
+                            elevation_bin = static_cast<int>((number_elevation_bin - 1) - floor(fmodf(
+                                    static_cast<float>(fabs(sin(elevation_angle) / elevation_resolution)),
+                                    (float) number_elevation_bin)));
+                            elevation_window = static_cast<int>(
+                                    static_cast<float>(size(elevation_window_function) + 1) / 2 -
+                                    round(elevation_bin_decimal * window_data_per_bin));
+                        } else {
+                            elevation_signum = -1;
+                            elevation_bin = static_cast<int>(floor(
+                                    fmodf(static_cast<float>(fabs(sin(elevation_angle) / elevation_resolution)),
+                                          number_elevation_bin)));
+                            elevation_window = static_cast<int>(
+                                    static_cast<float>(size(elevation_window_function) + 1) / 2 +
+                                    round(elevation_bin_decimal * window_data_per_bin));
                         }
 
                         /// Calculation of phase based on travelled distance of ray
@@ -199,7 +219,8 @@ void DetectionSensing::apply(SensorData &sensor_data) {
                                     } else if (doppler_bin + doppler_index >= number_doppler_bin) {
                                         doppler_convolve_index = -1;
                                     }
-                                    for (int azimuth_index = -8; azimuth_index <= 7; azimuth_index++) {
+
+                                    for (int azimuth_index = -number_azimuth_bin / 2 + 1; azimuth_index <= number_azimuth_bin / 2; azimuth_index++) {
                                         /// Azimuth FFT (convolve window function over azimuth bin)
                                         int azimuth_convolve_index = 0;
                                         if (azimuth_bin + azimuth_index < 0) {
@@ -207,78 +228,99 @@ void DetectionSensing::apply(SensorData &sensor_data) {
                                         } else if (azimuth_bin + azimuth_index >= number_azimuth_bin) {
                                             azimuth_convolve_index = -1;
                                         }
-                                        /// Calculation of windowing factor as a FFT equivalent representation
-                                        float windowing_factor =
-                                                range_window_function[range_window -
-                                                                      range_index * window_data_per_bin] *
-                                                doppler_window_function[doppler_window +
-                                                                        doppler_index * window_data_per_bin] *
-                                                azimuth_window_function[azimuth_window +
-                                                                        azimuth_signum * azimuth_index *
-                                                                        window_data_per_bin];
+                                        for (int elevation_index = -number_elevation_bin / 2 + 1; elevation_index <= number_elevation_bin / 2; elevation_index++) {
+                                            /// Elevation FFT (convolve window function over elevation bin)
+                                            int elevation_convolve_index = 0;
+                                            if (elevation_bin + elevation_index < 0) {
+                                                elevation_convolve_index = 1;
+                                            } else if (elevation_bin + elevation_index >= number_elevation_bin) {
+                                                elevation_convolve_index = -1;
+                                            }
+                                            /// Calculation of windowing factor as a FFT equivalent representation
+                                            float windowing_factor =
+                                                    range_window_function[(range_window -
+                                                                          range_index * window_data_per_bin)%(size(range_window_function))] *
+                                                    doppler_window_function[(doppler_window +
+                                                                            doppler_index * window_data_per_bin)%(size(doppler_window_function))] *
+                                                    azimuth_window_function[(azimuth_window +
+                                                                            azimuth_signum * azimuth_index *
+                                                                            window_data_per_bin)%(size(azimuth_window_function)-1)] *
+                                                    elevation_window_function[(elevation_window +
+                                                                              elevation_signum * elevation_index *
+                                                                              window_data_per_bin)%(size(elevation_window_function)-1)];
 
-                                        /// Calculation of complex signal strength
-                                        complex_signal_strength_sum[0] = radar_cuboid[range_bin + range_index]
-                                                                         [doppler_bin + doppler_index +
-                                                                          doppler_convolve_index * number_doppler_bin]
-                                                                         [azimuth_bin + azimuth_index +
-                                                                          azimuth_convolve_index *
-                                                                          number_azimuth_bin][0] +
-                                                                         complex_signal_strength[0] * windowing_factor;
-                                        complex_signal_strength_sum[1] = radar_cuboid[range_bin + range_index]
-                                                                         [doppler_bin + doppler_index +
-                                                                          doppler_convolve_index * number_doppler_bin]
-                                                                         [azimuth_bin + azimuth_index +
-                                                                          azimuth_convolve_index *
-                                                                          number_azimuth_bin][1] +
-                                                                         complex_signal_strength[1] * windowing_factor;
-                                        radar_cuboid[range_bin + range_index][doppler_bin + doppler_index +
-                                                                              doppler_convolve_index *
-                                                                              number_doppler_bin]
-                                        [azimuth_bin + azimuth_index + azimuth_convolve_index * number_azimuth_bin][0] =
-                                                complex_signal_strength_sum[0];
-                                        radar_cuboid[range_bin + range_index][doppler_bin + doppler_index +
-                                                                              doppler_convolve_index *
-                                                                              number_doppler_bin]
-                                        [azimuth_bin + azimuth_index + azimuth_convolve_index * number_azimuth_bin][1] =
-                                                complex_signal_strength_sum[1];
+                                            /// Calculation of complex signal strength
+                                            complex_signal_strength_sum[0] = radar_cuboid[range_bin + range_index]
+                                                                             [doppler_bin + doppler_index +
+                                                                              doppler_convolve_index * number_doppler_bin]
+                                                                             [azimuth_bin + azimuth_index +
+                                                                              azimuth_convolve_index *
+                                                                              number_azimuth_bin]
+                                                                              [elevation_bin + elevation_index +
+                                                                              elevation_convolve_index * number_elevation_bin][0] +
+                                                                             complex_signal_strength[0] * windowing_factor;
+                                            complex_signal_strength_sum[1] = radar_cuboid[range_bin + range_index]
+                                                                             [doppler_bin + doppler_index +
+                                                                              doppler_convolve_index * number_doppler_bin]
+                                                                             [azimuth_bin + azimuth_index +
+                                                                              azimuth_convolve_index *
+                                                                              number_azimuth_bin]
+                                                                             [elevation_bin + elevation_index +
+                                                                              elevation_convolve_index * number_elevation_bin][1] +
+                                                                             complex_signal_strength[1] * windowing_factor;
+                                            radar_cuboid[range_bin + range_index][doppler_bin + doppler_index +
+                                                                                  doppler_convolve_index *
+                                                                                  number_doppler_bin]
+                                                                                  [azimuth_bin + azimuth_index + azimuth_convolve_index *
+                                                                                  number_azimuth_bin]
+                                                                                  [elevation_bin + elevation_index +
+                                                                                  elevation_convolve_index * number_elevation_bin][0] =
+                                                                                          complex_signal_strength_sum[0];
+                                            radar_cuboid[range_bin + range_index][doppler_bin + doppler_index +
+                                                                                  doppler_convolve_index *
+                                                                                  number_doppler_bin]
+                                                                                  [azimuth_bin + azimuth_index +
+                                                                                  azimuth_convolve_index * number_azimuth_bin]
+                                                                                  [elevation_bin + elevation_index +
+                                                                                  elevation_convolve_index * number_elevation_bin][1] =
+                                                                                          complex_signal_strength_sum[1];
+                                        }
                                     }
                                 }
                             }
                         }
                     }
                 }
+
                 /// CFAR Peakdetection
                 for (size_t r = 0; r < number_range_bin; ++r) {
-                    std::vector<float> doppler_vec(number_doppler_bin);
-                    //memset(doppler_vec, 0, sizeof(doppler_vec));
+                    float doppler_vec[number_doppler_bin];
+                    memset(doppler_vec, 0, sizeof(doppler_vec));
                     for (size_t d = 0; d < number_doppler_bin; ++d) {
                         for (size_t b = 0; b < number_azimuth_bin; ++b) {
-                            float power = get_cube_power_at(radar_cuboid, r, d, b);
-                            // Look for Beam bin that contains the maximum power in each Doppler bin
-                            if (power > power_threshold && power > doppler_vec[d]) {
-                                doppler_vec[d] = power;
+                            for (size_t e = 0; e < number_elevation_bin; ++e) {
+                                float power = get_cube_power_at(radar_cuboid, r, d, b, e);
+                                /// Look for Beam bin that contains the maximum power in each Doppler bin
+                                if (power > power_threshold && power > doppler_vec[d]) {
+                                    doppler_vec[d] = power;
+                                }
                             }
                         }
                     }
-                    std::vector<int> doppler_idx;    // vector containing the index of the Doppler bins with the maximum power
+                    std::vector<int> doppler_idx;
                     for (size_t p = 0; p < num_peaks_max; ++p) {
                         float current_doppler_max = 0;
                         int current_doppler_max_idx = 0;
                         for (size_t d = 0; d < number_doppler_bin; ++d) {
-                            // zero out doppler_vec values once their index is saved as a max index
                             if (doppler_vec[d] > 0 && doppler_vec[d] > current_doppler_max) {
                                 current_doppler_max = doppler_vec[d];
                                 current_doppler_max_idx = d;
                             }
                         }
-                        // if no Doppler bin with a power > 0 is found, go to the next Range bin
                         if (current_doppler_max == 0) {
                             p = num_peaks_max;
                             continue;
                         }
-                        // Zero out power values for doppler_vec element at current_doppler_max_idx and its neighbors.
-                        // Thus, they are not considered in the search for the next Peak.
                         if (current_doppler_max_idx == 0) {
                             doppler_vec[number_doppler_bin - 1] = 0;
                             doppler_vec[current_doppler_max_idx] = 0;
@@ -292,36 +334,44 @@ void DetectionSensing::apply(SensorData &sensor_data) {
                             doppler_vec[current_doppler_max_idx] = 0;
                             doppler_vec[current_doppler_max_idx + 1] = 0;
                         }
-                        // save doppler index with maximum power in an array
                         doppler_idx.push_back(current_doppler_max_idx);
                     }
-                    // For all found max dopplers...
                     for (int dpl: doppler_idx) {
-                        // ... write power for all azimuth bins of current doppler
                         for (size_t azi = 0; azi < number_azimuth_bin; ++azi) {
+                            for(size_t ele = 0; ele < number_elevation_bin; ++ele) {
+                                raw_detection rawDetection = get_detections_by_spectral_interpolation(radar_cuboid, r, dpl,
+                                                                                                      azi, ele, profile,
+                                                                                                      sensor_idx);
 
-                            raw_detection rawDetection = get_detections_by_spectral_interpolation(radar_cuboid, r, dpl,
-                                                                                                  azi, profile,
-                                                                                                  sensor_idx);
-                            if (!std::isnan(rawDetection.sub_bin_range)) {
-                                /// Add new detection and fill it
-                                auto detection = current_sensor->add_detection();
-                                detection->mutable_position()->set_distance(
-                                        rawDetection.sub_bin_range * range_resolution);
-                                if (static_cast<float>(rawDetection.sub_bin_azimuth) /
-                                    static_cast<float>(number_azimuth_bin) < 0.5) {
-                                    detection->mutable_position()->set_azimuth(
-                                            rawDetection.sub_bin_azimuth * azimuth_resolution);
-                                } else {
-                                    detection->mutable_position()->set_azimuth(
-                                            (static_cast<float>(number_azimuth_bin) - rawDetection.sub_bin_azimuth) *
-                                            azimuth_resolution * -1);
+                                if (!std::isnan(rawDetection.sub_bin_range)) {
+                                    /// Add new detection and fill it
+                                    auto detection = current_sensor->add_detection();
+                                    detection->mutable_position()->set_distance(
+                                            rawDetection.sub_bin_range * range_resolution);
+                                    if (static_cast<float>(rawDetection.sub_bin_azimuth) /
+                                        static_cast<float>(number_azimuth_bin) < 0.5) {
+                                        detection->mutable_position()->set_azimuth(
+                                                rawDetection.sub_bin_azimuth * azimuth_resolution);
+                                    } else {
+                                        detection->mutable_position()->set_azimuth(
+                                                (static_cast<float>(number_azimuth_bin) - rawDetection.sub_bin_azimuth) *
+                                                azimuth_resolution * -1);
+                                    }
+                                    if (static_cast<float>(rawDetection.sub_bin_elevation) /
+                                        static_cast<float>(number_elevation_bin) < 0.5) {
+                                        detection->mutable_position()->set_elevation(
+                                                rawDetection.sub_bin_elevation * elevation_resolution);
+                                    } else {
+                                        detection->mutable_position()->set_elevation(
+                                                (static_cast<float>(number_elevation_bin) - rawDetection.sub_bin_elevation) *
+                                                        elevation_resolution * -1);
+                                    }
+                                    detection->set_radial_velocity(rawDetection.sub_bin_doppler * doppler_resolution);
+                                    detection->set_rcs(10 * log10(rawDetection.raw_detection_power *
+                                                                  pow(detection->mutable_position()->distance(), 4)) +
+                                                       rcs_calibration);
+
                                 }
-                                detection->mutable_position()->set_elevation(0);
-                                detection->set_radial_velocity(rawDetection.sub_bin_doppler * doppler_resolution);
-                                detection->set_rcs(10 * log10(rawDetection.raw_detection_power *
-                                                              pow(detection->mutable_position()->distance(), 4)) +
-                                                   rcs_calibration);
                             }
                         }
                     }
