@@ -33,7 +33,7 @@ namespace model {
         //// Main Functions
         using Strategy::Strategy;
         void apply(SensorData &) override;
-        typedef std::vector<std::vector<std::vector<std::vector<float> > > > type_radar_cuboid;
+        typedef std::vector <std::vector <std::vector <std::vector <std::vector <float> > > > > type_radar_cuboid;
         typedef struct{
             std::vector<float> NofPeaks;
             std::vector<float> IdxPeakList;
@@ -41,6 +41,7 @@ namespace model {
             std::vector<float> sub_bin_range;
             std::vector<float> sub_bin_doppler;
             std::vector<float> sub_bin_azimuth;
+            std::vector<float> sub_bin_elevation;
             std::vector<float> detection_power;
         } type_detection_list;
 	};

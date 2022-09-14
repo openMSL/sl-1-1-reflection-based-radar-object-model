@@ -22,15 +22,20 @@
        uint32_t azimuth_CFAR_window_size;
        uint32_t azimuth_CFAR_ref_pos;
        float azimuth_CFAR_factor;
+       uint32_t elevation_CFAR_window_size;
+       uint32_t elevation_CFAR_ref_pos;
+       float elevation_CFAR_factor;
        float noise_value;
        uint32_t lookup_size_interpolation;
        float lookup_stepsize_interpolation;
        std::vector<float> lookup_range_interpolation;
        std::vector<float> lookup_doppler_interpolation;
        std::vector<float> lookup_azimuth_interpolation;
+       std::vector<float> lookup_elevation_interpolation;
        uint32_t max_number_detections;
        float power_threshold;
        uint32_t num_peaks_max;
        float rcs_calibration;
 
     } detection_sensing_parameters;
+
