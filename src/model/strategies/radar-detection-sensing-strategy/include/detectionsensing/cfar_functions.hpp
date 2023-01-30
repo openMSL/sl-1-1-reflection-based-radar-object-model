@@ -1,5 +1,6 @@
 //
-// Created by lukas on 04/08/2021.
+// Copyright 2022 Technical University of Darmstadt - FZD
+// SPDX-License-Identifier: MPL-2.0
 //
 
 #ifndef REFLECTIONBASEDRADARMODEL_CFAR_FUNCTIONS_HPP
