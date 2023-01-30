@@ -9,7 +9,7 @@ It is a highly parameterizable sensor system model including detection calculati
 The model received radar reflection data calculated in a simulation tool beforehand e.g. with ray tracing.
 The model outputs are radar detections and detected moving objects.<br><br>
 
-<img src="https://user-images.githubusercontent.com/27010086/148826424-cc93a2ba-91b1-4454-995c-f679b0680377.gif" width="800" />
+<img src="doc/img/model_video.gif" width="800" />
 
 ## Modeling Approach
 
@@ -23,7 +23,7 @@ This is where the magic happens.
 The `apply()` function of the strategy is called by the `do_calc()` function of the Framework.
 There are four subsequent strategies as shown in the image below.
 
-<img src="https://gitlab.com/tuda-fzd/perception-sensor-modeling/reflection-based-radar-object-model/uploads/904bcd34c71e5bab8baabebb1e04649d/OSMP_framework.JPG" width="800" />
+<img src="doc/img/osmp_framework.JPG" width="800" />
 
 ### Modeling of FFT and windowing processing by [Fouriertracing](https://tuprints.ulb.tu-darmstadt.de/17545/1/Dissertation_Martin_Holder_2021.pdf)
 
@@ -35,9 +35,9 @@ The general process is visualized by the following pictures.
 On the left side the smearing of the delta-peak into the adjacent bins due to the window function is shown.
 The picture on the right side visualizes the superposition of two different delta-peaks based on a varying bin distance.
 
-<img src="https://gitlab.com/tuda-fzd/perception-sensor-modeling/reflection-based-radar-object-model/uploads/a69177d08739ac09b749048685e587d1/delta_peak.gif" width="400" />
+<img src="doc/img/delta_peak.gif" width="400" />
 
-<img src="https://gitlab.com/tuda-fzd/perception-sensor-modeling/reflection-based-radar-object-model/uploads/d983f7697694846f28ee2e4721c32724/multiple_delta_peaks.gif" width="400" />
+<img src="doc/img/multiple_delta_peaks.gif" width="400" />
 
 Afterwards an OS-CFAR peak detection is applied to the cuboid.
 The output of the DetectionSensing is an osi3::RadarDetection message.<br><br>
@@ -233,15 +233,15 @@ Currently, all information on model input is passed to the output.
 ### Install Dependencies in Windows 10
 
 1. Install cmake from https://github.com/Kitware/CMake/releases/download/v3.20.3/cmake-3.20.3-windows-x86_64.msi
-2. Install protobuf for [MSYS-2020](install_protobuf_Win64_MSYS-2020.md) or [Visual Studio 2017](install_protobuf_Win64_VS2017.md)
+2. Install protobuf for [MSYS-2020](doc/build-instructions/install_protobuf_Win64_MSYS-2020.md) or [Visual Studio 2017](doc/build-instructions/install_protobuf_Win64_VS2017.md)
 
 ### Clone with Submodules, Build, and Install in Windows 10
 
 1. Clone this repository <ins>with submodules</ins>:
    ```bash
-   $ git clone https://gitlab.com/tuda-fzd/perception-sensor-modeling/reflection-based-radar-object-model.git --recurse-submodules
+   $ git clone git@github.com:openMSL/reflection_based_radar_object_model.git --recurse-submodules
    ```
-2. Build the model in [MSYS-2020](install_model_Win64_MSYS-2020.md) or [Visual Studio 2017](install_model_Win64_VS2017.md)
+2. Build the model in [MSYS-2020](doc/build-instructions/install_model_Win64_MSYS-2020.md) or [Visual Studio 2017](doc/build-instructions/install_model_Win64_VS2017.md)
 3. Take FMU from `FMU_INSTALL_DIR`
 
     (Please note that sources are not packed into the FMU at the moment.)
@@ -251,7 +251,7 @@ Currently, all information on model input is passed to the output.
 ### Install Dependencies in Ubuntu 18.04 / 20.04
 
 1. Install cmake 3.12
-   * as told in [these install instructions](install_cmake_ubuntu_3-12.md)
+   * as told in [these install instructions](doc/build-instructions/install_cmake_ubuntu_3-12.md)
 2. Install protobuf 3.0.0:
    * Check your version via `protoc --version`. It should output: `libprotoc 3.0.0`
    * If needed, you can install it via `sudo apt-get install libprotobuf-dev protobuf-compiler`
@@ -269,7 +269,7 @@ Currently, all information on model input is passed to the output.
 
 1. Clone this repository <ins>with submodules</ins>:
     ```bash
-    $ git clone https://gitlab.com/tuda-fzd/perception-sensor-modeling/reflection-based-radar-object-model.git --recurse-submodules
+    $ git clone git@github.com:openMSL/reflection_based_radar_object_model.git --recurse-submodules
     ```
 2. Build the model by executing in the extracted project root directory:
     ```bash
