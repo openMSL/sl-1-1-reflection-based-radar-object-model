@@ -1,6 +1,8 @@
 # Reflection Based Radar Object Model
 
-<img align="right" src="doc/img/fzd_logo.jpg" width="100" />
+![Build workflow](https://github.com/openMSL/reflection_based_radar_object_model/actions/workflows/build.yml/badge.svg)
+
+<img align="right" src="https://gitlab.com/tuda-fzd/perception-sensor-modeling/object-based-generic-perception-object-model/uploads/17c84e9ec0acf0fac2e35855f038ad0b/fzdlogo.jpg" width="100" />
 
 This model is a Reflection Based Radar Model based on the [Modular OSMP Framework](https://gitlab.com/tuda-fzd/perception-sensor-modeling/modular-osmp-framework) by FZD.
 It is a highly parameterizable sensor system model including detection calculation and object tracking simulation.
