@@ -4,10 +4,12 @@
 //
 
 #include "ros_detections/ros_detections.hpp"
-#include <sensor_msgs/PointCloud2.h>
-#include <pcl_ros/point_cloud.h>
+
 #include <string>
 #include <utility>
+
+#include <pcl_ros/point_cloud.h>
+#include <sensor_msgs/PointCloud2.h>
 
 #ifdef _WIN32
 #include <math.h>
@@ -22,42 +24,54 @@
 using namespace model;
 using namespace osi3;
 
-void ros_detections::apply(SensorData &sensor_data) {
+void RosDetections::apply(SensorData& sensor_data)
+{
     log("Starting ROS output for detections");
 
     ros::param::set("/use_sim_time", true);
 
-    if ((sensor_data.sensor_view_size() == 0) || (!sensor_data.has_feature_data())) {
+    if ((sensor_data.sensor_view_size() == 0) || (!sensor_data.has_feature_data()))
+    {
         log("No sensor view or feature data received");
         return;
     }
 
-    if (!sensor_data.sensor_view(0).has_global_ground_truth()) {
+    if (!sensor_data.sensor_view(0).has_global_ground_truth())
+    {
         log("No global ground truth received");
         return;
     }
 
-    if (sensor_data.feature_data().radar_sensor().size() > 0) {
-        for (int sensor_no = 0; sensor_no < sensor_data.feature_data().radar_sensor_size(); sensor_no++) {
+    if (sensor_data.feature_data().radar_sensor().size() > 0)
+    {
+        for (int sensor_no = 0; sensor_no < sensor_data.feature_data().radar_sensor_size(); sensor_no++)
+        {
             worker_pcl = std::make_unique<detections::WorkerPCL>("detections_" + std::to_string(sensor_no), "sensor_" + std::to_string(sensor_no));
             worker_pcl->injectRadar(sensor_data, sensor_no, log);
         }
-    } else {
+    }
+    else
+    {
         log("No radar sensor in feature data");
         return;
     }
 }
 
-ros_detections::ros_detections(const Profile &profile, const Log &log, const Alert &alert) : model::Strategy(profile, log, alert) {
+RosDetections::RosDetections(const Profile& profile, const Log& log, const Alert& alert) : model::Strategy(profile, log, alert)
+{
     auto remapping = std::map<std::string, std::string>();
     remapping.emplace("__master", "http://localhost:11311");
     ros::init(remapping, "sensor_model_fmu");
 }
 
-detections::WorkerPCL::WorkerPCL(const std::string &topic, std::string frame_id) : publisher(node.advertise<pcl::PointCloud<pcl::PointXYZ>>(topic, 1)), frame_id(std::move(frame_id)) {}
+detections::WorkerPCL::WorkerPCL(const std::string& topic, std::string frame_id)
+    : publisher(node.advertise<pcl::PointCloud<pcl::PointXYZ>>(topic, 1)), frame_id(std::move(frame_id))
+{
+}
 
-void detections::WorkerPCL::injectRadar(SensorData &sensor_data, int sensor_no, const Log &log) {
-    const auto &radar_sensor = sensor_data.feature_data().radar_sensor(sensor_no);
+void detections::WorkerPCL::injectRadar(SensorData& sensor_data, int sensor_no, const Log& log)
+{
+    const auto& radar_sensor = sensor_data.feature_data().radar_sensor(sensor_no);
 
     auto sim_seconds = uint32_t(sensor_data.sensor_view(0).global_ground_truth().timestamp().seconds());
     auto sim_nanos = uint32_t(sensor_data.sensor_view(0).global_ground_truth().timestamp().nanos());
@@ -66,8 +80,9 @@ void detections::WorkerPCL::injectRadar(SensorData &sensor_data, int sensor_no, 
 
     auto no_of_detections = radar_sensor.detection_size();
 
-    if (no_of_detections == 0) {
-        auto timestamp = (double) sim_seconds + (double) sim_nanos / 1000000000;
+    if (no_of_detections == 0)
+    {
+        auto timestamp = (double)sim_seconds + (double)sim_nanos / 1000000000;
         log("No detections from sensor " + std::to_string(sensor_no) + " for ROS output at timestamp " + std::to_string(timestamp));
         return;
     }
@@ -80,7 +95,8 @@ void detections::WorkerPCL::injectRadar(SensorData &sensor_data, int sensor_no, 
 
     /// Run through all detections
 
-    for (const auto &detection: radar_sensor.detection()) {
+    for (const auto& detection : radar_sensor.detection())
+    {
         auto x = float(detection.position().distance() * cos(detection.position().azimuth()) * cos(detection.position().elevation()));
         auto y = float(detection.position().distance() * sin(detection.position().azimuth()) * cos(detection.position().elevation()));
         auto z = float(detection.position().distance() * sin(detection.position().elevation()));
@@ -88,7 +104,8 @@ void detections::WorkerPCL::injectRadar(SensorData &sensor_data, int sensor_no, 
     }
     pcl::copyPointCloud(*cloud_tmp, *cloud);
     /// Add intensity to all detections
-    for (int detection_idx = 0; detection_idx < radar_sensor.detection_size(); detection_idx++) {
+    for (int detection_idx = 0; detection_idx < radar_sensor.detection_size(); detection_idx++)
+    {
         cloud->points[detection_idx].intensity = float(radar_sensor.detection(detection_idx).rcs());
     }
     publisher.publish(cloud);

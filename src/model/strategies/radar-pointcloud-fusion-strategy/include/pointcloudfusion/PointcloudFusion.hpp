@@ -10,19 +10,20 @@
 
 using namespace osi3;
 
-namespace model {
+namespace model
+{
 
-    class PointcloudFusion : public Strategy {
+class PointcloudFusion : public Strategy
+{
 
-        using Strategy::Strategy;
-        void apply(SensorData &) override;
+    using Strategy::Strategy;
+    void apply(SensorData& sensor_data) override;
 
-    public:
+  public:
+  private:
+    static void calculate_fused_pointcloud_for_given_lidar_sensors(SensorData& sensor_data);
+    static void calculate_fused_pointcloud_for_given_radar_sensors(SensorData& sensor_data);
+};
+}  // namespace model
 
-    private:
-        static void calculate_fused_pointcloud_for_given_lidar_sensors(SensorData &sensor_data, const Log &log);
-        static void calculate_fused_pointcloud_for_given_radar_sensors(SensorData &sensor_data, const Log &log);
-    };
-}
-
-#endif //POINTCLOUD_FUSION_STRATEGY_HPP
+#endif  // POINTCLOUD_FUSION_STRATEGY_HPP

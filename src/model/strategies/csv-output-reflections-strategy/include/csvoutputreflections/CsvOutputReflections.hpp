@@ -6,29 +6,32 @@
 #ifndef CSV_OUTPUT_REFLECTIONS_STRATEGY_HPP
 #define CSV_OUTPUT_REFLECTIONS_STRATEGY_HPP
 
-#include <model/include/strategy.hpp>
 #include <string>
+
+#include <model/include/strategy.hpp>
 
 using namespace osi3;
 
-namespace model {
+namespace model
+{
 
-	class CsvOutputReflections : public Strategy {
+class CsvOutputReflections : public Strategy
+{
 
-        using Strategy::Strategy;
+    using Strategy::Strategy;
 
-        void apply(SensorData &) override;
+    void apply(SensorData& sensor_data) override;
 
-        std::string file_path_reflections;
-        bool first_call = true;
+    std::string file_path_reflections;
+    bool first_call = true;
 
-    public:
+  public:
+  private:
+    static void write_first_line_to_csv(const std::string& path);
+    static void
+    write_data_to_csv(const std::string& path, double timestamp, size_t reflection_idx, double azimuth_in_deg, double elevation_in_deg, double distance, double signal_strength);
+};
 
-    private:
-        static void write_first_line_to_CSV(const std::string& path);
-        static void write_data_to_CSV(const std::string& path, double timestamp, size_t reflection_idx, double azimuth_in_deg, double elevation_in_deg, double distance, double signal_strength);
-    };
+}  // namespace model
 
-}
-
-#endif //CSV_OUTPUT_REFLECTIONS_STRATEGY_HPP
+#endif  // CSV_OUTPUT_REFLECTIONS_STRATEGY_HPP
