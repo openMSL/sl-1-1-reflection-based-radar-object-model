@@ -82,7 +82,7 @@ void DetectionSensing::apply(SensorData& sensor_data)
                 float wavelength = speed_of_light / static_cast<float>(emitter_frequency);
 
                 /// Reserve memory for the radar cuboid to prevent re-allocations at every complex signal strength iteration
-                type_radar_cuboid radar_cuboid(
+                TypeRadarCuboid radar_cuboid(
                     number_range_bin,
                     std::vector<std::vector<std::vector<std::vector<float> > > >(
                         number_doppler_bin,
@@ -318,7 +318,7 @@ void DetectionSensing::apply(SensorData& sensor_data)
                         {
                             for (int ele = 0; ele < number_elevation_bin; ++ele)
                             {
-                                raw_detection raw_detection = get_detections_by_spectral_interpolation(radar_cuboid, range, dpl, azi, ele, profile);
+                                RawDetection raw_detection = get_detections_by_spectral_interpolation(radar_cuboid, range, dpl, azi, ele, profile);
 
                                 if (!std::isnan(raw_detection.sub_bin_range))
                                 {

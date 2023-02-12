@@ -56,11 +56,11 @@ typedef struct
     float sub_bin_azimuth;
     float sub_bin_elevation;
     float raw_detection_power;
-} raw_detection;
+} RawDetection;
 
 using radar_cuboid = std::vector<std::vector<std::vector<std::vector<std::vector<float>>>>>;
 
-raw_detection get_detections_by_spectral_interpolation(radar_cuboid& cube, int range, int doppler, int azimuth, int elevation, const model::Profile& profile);
+RawDetection get_detections_by_spectral_interpolation(radar_cuboid& cube, int range, int doppler, int azimuth, int elevation, const model::Profile& profile);
 // raw_detection get_detections_by_spectral_interpolation(radar_cuboid &cube);
 
 bool check_local_max(radar_cuboid& cube,
@@ -77,36 +77,36 @@ bool check_local_max_range(radar_cuboid& cube, int range, int doppler, int azimu
 bool check_local_max_doppler(radar_cuboid& cube, int range, int doppler, int azimuth, int elevation, float cut_power, int number_doppler_bin);
 bool check_local_max_beam(radar_cuboid& cube, int range, int doppler, int azimuth, int elevation, float cut_power, int number_azimuth_bin);
 bool check_local_max_elevation(radar_cuboid& cube, int range, int doppler, int azimuth, int elevation, float cut_power, int number_elevation_bin);  // new
-float get_CFAR_threshold_range(radar_cuboid& cube,
+float get_cfar_threshold_range(radar_cuboid& cube,
                                int range,
                                int doppler,
                                int azimuth,
                                int elevation,
-                               int range_CFAR_window_size,
+                               int range_cfar_window_size,
                                int number_range_bin,
                                float noise_value,
-                               int range_CFAR_ref_pos,
-                               float range_CFAR_factor);
-float get_CFAR_threshold_beam(radar_cuboid& cube,
+                               int range_cfar_ref_pos,
+                               float range_cfar_factor);
+float get_cfar_threshold_beam(radar_cuboid& cube,
                               int range,
                               int doppler,
                               int azimuth,
                               int elevation,
                               int number_azimuth_bin,
-                              int azimuth_CFAR_window_size,
-                              int azimuth_CFAR_ref_pos,
+                              int azimuth_cfar_window_size,
+                              int azimuth_cfar_ref_pos,
                               float noise_value,
-                              float azimuth_CFAR_factor);
-float get_CFAR_threshold_elevation(radar_cuboid& cube,
+                              float azimuth_cfar_factor);
+float get_cfar_threshold_elevation(radar_cuboid& cube,
                                    int range,
                                    int doppler,
                                    int azimuth,
                                    int elevation,
                                    int number_elevation_bin,
-                                   int elevation_CFAR_window_size,
-                                   int elevation_CFAR_ref_pos,
+                                   int elevation_cfar_window_size,
+                                   int elevation_cfar_ref_pos,
                                    float noise_value,
-                                   float elevation_CFAR_factor);  // new
+                                   float elevation_cfar_factor);  // new
 float correct_windowing_bias_interpolation_range(radar_cuboid& cube,
                                                  int range,
                                                  int doppler,

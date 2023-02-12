@@ -74,7 +74,7 @@ void model::CsvOutputGTObjects::apply(SensorData& sensor_data)
     auto no_of_stationary_objects = sensor_data.sensor_view(0).global_ground_truth().stationary_object_size();
 
     /// Start a vector for gt_objects with (gt_id, x, y, z, roll, pitch, yaw, width, length, height, is_moving)
-    std::vector<GT_object> gt_objects;
+    std::vector<GTObject> gt_objects;
     gt_objects.reserve(no_of_moving_objects + no_of_stationary_objects);
 
     /// Collect moving objects
@@ -87,7 +87,7 @@ void model::CsvOutputGTObjects::apply(SensorData& sensor_data)
 
         Vector3d relative_position_ego_coordinate_system = TF::transform_position_from_world_to_ego_coordinates(gt_moving_object.base().position(), ego_data);
         Orientation3d relative_orientation = TF::calc_relative_orientation_to_local(gt_moving_object.base().orientation(), ego_data.ego_base.orientation());
-        GT_object actual_gt_object;
+        GTObject actual_gt_object;
         actual_gt_object.id = gt_moving_object.id().value();
         actual_gt_object.x = std::round(float(relative_position_ego_coordinate_system.x()) * 1000) / 1000;
         actual_gt_object.y = std::round(float(relative_position_ego_coordinate_system.y()) * 1000) / 1000;
@@ -107,7 +107,7 @@ void model::CsvOutputGTObjects::apply(SensorData& sensor_data)
     {
         Vector3d relative_position_ego_coordinate_system = TF::transform_position_from_world_to_ego_coordinates(gt_stationary_object.base().position(), ego_data);
         Orientation3d relative_orientation = TF::calc_relative_orientation_to_local(gt_stationary_object.base().orientation(), ego_data.ego_base.orientation());
-        GT_object actual_gt_object;
+        GTObject actual_gt_object;
         actual_gt_object.id = gt_stationary_object.id().value();
         actual_gt_object.x = std::round(float(relative_position_ego_coordinate_system.x()) * 1000) / 1000;
         actual_gt_object.y = std::round(float(relative_position_ego_coordinate_system.y()) * 1000) / 1000;

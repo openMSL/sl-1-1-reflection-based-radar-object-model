@@ -22,7 +22,7 @@ class WorkerPCL final
 {
   public:
     WorkerPCL(const std::string& topic, std::string frame_id);
-    void injectRadar(SensorData& sensor_data, int sensor_no, const Log& log);
+    void inject_radar(SensorData& sensor_data, int sensor_no, const Log& log);
 
   private:
     const std::string frame_id;

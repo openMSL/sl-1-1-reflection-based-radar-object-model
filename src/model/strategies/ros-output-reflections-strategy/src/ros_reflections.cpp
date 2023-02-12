@@ -2,10 +2,6 @@
 // Copyright 2022 Technical University of Darmstadt - FZD
 // SPDX-License-Identifier: MPL-2.0
 //
-#ifndef Speed_of_Light
-#define Speed_of_Light 299792458
-#endif
-
 #ifndef _USE_MATH_DEFINES
 #define _USE_MATH_DEFINES
 #endif
@@ -23,6 +19,8 @@
 #else
 #include <cmath>
 #endif
+
+const float speed_of_light = 299792458.0;
 
 using namespace model;
 using namespace osi3;
@@ -50,7 +48,7 @@ void RosReflections::apply(SensorData& sensor_data)
         for (int sensor_no = 0; sensor_no < sensor_data.sensor_view(0).radar_sensor_view().size(); sensor_no++)
         {
             worker_pcl = std::make_unique<reflections::WorkerPCL>("reflections_" + std::to_string(sensor_no), "sensor_" + std::to_string(sensor_no));
-            worker_pcl->injectRadar(sensor_data, sensor_no, log);
+            worker_pcl->inject_radar(sensor_data, sensor_no, log);
         }
     }
     else
@@ -72,7 +70,7 @@ reflections::WorkerPCL::WorkerPCL(const std::string& topic, std::string frame_id
 {
 }
 
-void reflections::WorkerPCL::injectRadar(SensorData& sensor_data, int sensor_no, const Log& log)
+void reflections::WorkerPCL::inject_radar(SensorData& sensor_data, int sensor_no, const Log& log)
 {
     // loop over all sensors and rendering results
 
@@ -101,7 +99,7 @@ void reflections::WorkerPCL::injectRadar(SensorData& sensor_data, int sensor_no,
     {
         auto ray_vertical_angle_rad = reflection.source_vertical_angle();
         auto ray_horizontal_angle_rad = reflection.source_horizontal_angle();
-        auto distance = 0.5 * reflection.time_of_flight() * Speed_of_Light;
+        auto distance = 0.5 * reflection.time_of_flight() * speed_of_light;
 
         double x = distance * cos(ray_horizontal_angle_rad) * cos(ray_vertical_angle_rad);
         double y = distance * sin(ray_horizontal_angle_rad) * cos(ray_vertical_angle_rad);

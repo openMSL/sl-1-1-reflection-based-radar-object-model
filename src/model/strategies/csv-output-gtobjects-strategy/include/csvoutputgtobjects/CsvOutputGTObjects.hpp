@@ -27,7 +27,7 @@ class CsvOutputGTObjects : public Strategy
 
   public:
   private:
-    struct GT_object
+    struct GTObject
     {
         size_t id = 0;
         float x = 0.0;

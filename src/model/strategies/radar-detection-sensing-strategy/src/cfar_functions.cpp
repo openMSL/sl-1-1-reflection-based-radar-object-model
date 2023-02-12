@@ -23,9 +23,9 @@
  *      preCluster struct
  */
 
-raw_detection get_detections_by_spectral_interpolation(radar_cuboid& cube, int range, int doppler, int azimuth, int elevation, const model::Profile& profile)
+RawDetection get_detections_by_spectral_interpolation(radar_cuboid& cube, int range, int doppler, int azimuth, int elevation, const model::Profile& profile)
 {
-    raw_detection raw_detection = {NAN, NAN, NAN, NAN};
+    RawDetection raw_detection = {NAN, NAN, NAN, NAN};
     float cut_power = get_cube_power_at(cube, range, doppler, azimuth, elevation);
     if (check_local_max(cube,
                         range,
@@ -38,7 +38,7 @@ raw_detection get_detections_by_spectral_interpolation(radar_cuboid& cube, int r
                         profile.detection_sensing_parameters.number_azimuth_bin,
                         profile.detection_sensing_parameters.number_elevation_bin))
     {
-        if (get_CFAR_threshold_beam(cube,
+        if (get_cfar_threshold_beam(cube,
                                     range,
                                     doppler,
                                     azimuth,
@@ -49,7 +49,7 @@ raw_detection get_detections_by_spectral_interpolation(radar_cuboid& cube, int r
                                     profile.detection_sensing_parameters.noise_value,
                                     profile.detection_sensing_parameters.azimuth_CFAR_factor) < cut_power)
         {
-            if (get_CFAR_threshold_range(cube,
+            if (get_cfar_threshold_range(cube,
                                          range,
                                          doppler,
                                          azimuth,
@@ -60,7 +60,7 @@ raw_detection get_detections_by_spectral_interpolation(radar_cuboid& cube, int r
                                          profile.detection_sensing_parameters.range_CFAR_ref_pos,
                                          profile.detection_sensing_parameters.range_CFAR_factor) < cut_power)
             {
-                if (get_CFAR_threshold_elevation(cube,
+                if (get_cfar_threshold_elevation(cube,
                                                  range,
                                                  doppler,
                                                  azimuth,
@@ -169,31 +169,31 @@ bool check_local_max(radar_cuboid& cube,
  *
  * @param cube      The original radar cube
  * @param range         Range position
- * @param dopper         Doppler position
+ * @param doppler         Doppler position
  * @param azimuth         Beam position
  * @param elevation         Elevation position
  * @param cut_power Power value of cell under test
  * @return
  *      True if local max (peak) in range dimension
  */
-bool check_local_max_range(radar_cuboid& cube, int range, int dopper, int azimuth, int elevation, float cut_power, int number_range_bin)
+bool check_local_max_range(radar_cuboid& cube, int range, int doppler, int azimuth, int elevation, float cut_power, int number_range_bin)
 {
     bool output;
     if (range == 0)
     {
-        output = (cut_power >= get_cube_power_at(cube, range + 1, dopper, azimuth, elevation));
+        output = (cut_power >= get_cube_power_at(cube, range + 1, doppler, azimuth, elevation));
     }
     else if (range == -1)
     {
-        output = (cut_power >= get_cube_power_at(cube, range - 1, dopper, azimuth, elevation));
+        output = (cut_power >= get_cube_power_at(cube, range - 1, doppler, azimuth, elevation));
     }
     else if (range == number_range_bin - 1)
     {
-        output = (cut_power >= get_cube_power_at(cube, range - 1, dopper, azimuth, elevation));
+        output = (cut_power >= get_cube_power_at(cube, range - 1, doppler, azimuth, elevation));
     }
     else
     {
-        output = ((get_cube_power_at(cube, range - 1, dopper, azimuth, elevation) < cut_power) && (cut_power > get_cube_power_at(cube, range + 1, dopper, azimuth, elevation)));
+        output = ((get_cube_power_at(cube, range - 1, doppler, azimuth, elevation) < cut_power) && (cut_power > get_cube_power_at(cube, range + 1, doppler, azimuth, elevation)));
     }
     return output;
 }
@@ -311,7 +311,7 @@ bool check_local_max_elevation(radar_cuboid& cube, int range, int doppler, int a
  * @return
  *      Threshold value for given cell
  */
-float get_CFAR_threshold_range(radar_cuboid& cube,
+float get_cfar_threshold_range(radar_cuboid& cube,
                                int range,
                                int doppler,
                                int azimuth,
@@ -385,7 +385,7 @@ float get_CFAR_threshold_range(radar_cuboid& cube,
  * @return
  *      Threshold value for given cell
  */
-float get_CFAR_threshold_beam(radar_cuboid& cube,
+float get_cfar_threshold_beam(radar_cuboid& cube,
                               int range,
                               int doppler,
                               int azimuth,
@@ -467,13 +467,13 @@ float get_CFAR_threshold_beam(radar_cuboid& cube,
  * @param azimuth         Beam peak position
  * @param elevation         Elevation peak position
  * @param number_elevation_bin
- * @param elevation_CFAR_window_size
- * @param elevation_CFAR_ref_pos
+ * @param elevation_cfar_window_size
+ * @param elevation_cfar_ref_pos
  * @param noise_value
- * @param elevation_CFAR_factor
+ * @param elevation_cfar_factor
  * @return
  */
-float get_CFAR_threshold_elevation(radar_cuboid& cube,
+float get_cfar_threshold_elevation(radar_cuboid& cube,
                                    int range,
                                    int doppler,
                                    int azimuth,

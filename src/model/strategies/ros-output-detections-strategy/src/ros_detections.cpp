@@ -47,7 +47,7 @@ void RosDetections::apply(SensorData& sensor_data)
         for (int sensor_no = 0; sensor_no < sensor_data.feature_data().radar_sensor_size(); sensor_no++)
         {
             worker_pcl = std::make_unique<detections::WorkerPCL>("detections_" + std::to_string(sensor_no), "sensor_" + std::to_string(sensor_no));
-            worker_pcl->injectRadar(sensor_data, sensor_no, log);
+            worker_pcl->inject_radar(sensor_data, sensor_no, log);
         }
     }
     else
@@ -69,7 +69,7 @@ detections::WorkerPCL::WorkerPCL(const std::string& topic, std::string frame_id)
 {
 }
 
-void detections::WorkerPCL::injectRadar(SensorData& sensor_data, int sensor_no, const Log& log)
+void detections::WorkerPCL::inject_radar(SensorData& sensor_data, int sensor_no, const Log& log)
 {
     const auto& radar_sensor = sensor_data.feature_data().radar_sensor(sensor_no);
 
