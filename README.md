@@ -1,7 +1,8 @@
 # Reflection Based Radar Object Model
 
-![SPDX workflow](https://github.com/openMSL/reflection_based_radar_object_model/actions/workflows/spdx.yml/badge.svg)
-![Build workflow](https://github.com/openMSL/reflection_based_radar_object_model/actions/workflows/build.yml/badge.svg)
+![SPDX workflow](https://github.com/openMSL/sl-1-1-reflection-based-radar-object-model/actions/workflows/spdx.yml/badge.svg)
+![CPP Linter workflow](https://github.com/openMSL/sl-1-1-reflection-based-radar-object-model/actions/workflows/cpp-linter.yml/badge.svg)
+![Build workflow](https://github.com/openMSL/sl-1-1-reflection-based-radar-object-model/actions/workflows/build.yml/badge.svg)
 
 <img align="right" src="https://gitlab.com/tuda-fzd/perception-sensor-modeling/object-based-generic-perception-object-model/uploads/17c84e9ec0acf0fac2e35855f038ad0b/fzdlogo.jpg" width="100" />
 
@@ -19,7 +20,7 @@ The model outputs are radar detections and detected moving objects.<br><br>
 The outer layer of the model is the [Modular OSMP Framework](https://gitlab.com/tuda-fzd/perception-sensor-modeling/modular-osmp-framework) by FZD.
 It specifies ways in which models using the [Open Simulation Interface (OSI)](https://github.com/OpenSimulationInterface/open-simulation-interface) are to be packaged for their use in simulation environments using [FMI 2.0](https://fmi-standard.org).
 
-The actual logic of the model is packed in so called strategies.
+The actual logic of the model is packed in so-called strategies.
 This is where the magic happens.
 The `apply()` function of the strategy is called by the `do_calc()` function of the Framework.
 There are four subsequent strategies as shown in the image below.
