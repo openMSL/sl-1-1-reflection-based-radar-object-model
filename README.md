@@ -1,4 +1,4 @@
-# Reflection Based Radar Object Model
+# SL 1-1 Reflection Based Radar Object Model
 
 ![SPDX workflow](https://github.com/openMSL/reflection_based_radar_object_model/actions/workflows/spdx.yml/badge.svg)
 ![Build workflow](https://github.com/openMSL/reflection_based_radar_object_model/actions/workflows/build.yml/badge.svg)
