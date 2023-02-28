@@ -41,56 +41,108 @@
 
 #pragma once
 
-#include <vector>
-#include <valarray>
 #include <random>
+#include <valarray>
+#include <vector>
 
-    // Data structure containing the results of the CFAR-functions. The values are returned as NAN if no target is
-    // detected.
-    typedef struct {
-        float sub_bin_range;
-        float sub_bin_doppler;
-        float sub_bin_azimuth;
-        float sub_bin_elevation;
-        float raw_detection_power;
-    } raw_detection;
+#include <model/include/strategy.hpp>
 
-    using radar_cuboid = std::vector<std::vector<std::vector<std::vector<std::vector<float>>>>>;
+// Data structure containing the results of the CFAR-functions. The values are returned as NAN if no target is
+// detected.
+typedef struct
+{
+    float sub_bin_range;
+    float sub_bin_doppler;
+    float sub_bin_azimuth;
+    float sub_bin_elevation;
+    float raw_detection_power;
+} RawDetection;
 
-    raw_detection get_detections_by_spectral_interpolation(radar_cuboid &cube, size_t r, size_t d, size_t b, size_t e, const model::Profile &profile, uint64_t i);
-    //raw_detection get_detections_by_spectral_interpolation(radar_cuboid &cube);
+using radar_cuboid = std::vector<std::vector<std::vector<std::vector<std::vector<float>>>>>;
 
-    bool check_local_max(radar_cuboid &cube, size_t r, size_t d, size_t b, size_t e, float cut_power, int number_range_bin, int number_doppler_bin,
-                         int number_azimuth_bin, int number_elevation_bin);
-    bool check_local_max_range(radar_cuboid &cube, size_t r, size_t d, size_t b, size_t e, float cut_power, int number_range_bin);
-    bool check_local_max_doppler(radar_cuboid &cube, size_t r, size_t d, size_t b, size_t e, float cut_power, int number_doppler_bin);
-    bool check_local_max_beam(radar_cuboid &cube, size_t r, size_t d, size_t b, size_t e, float cut_power, int number_azimuth_bin);
-    bool check_local_max_elevation(radar_cuboid &cube, size_t r, size_t d, size_t b, size_t e, float cut_power, int number_elevation_bin);//new
-    float get_CFAR_threshold_range(radar_cuboid &cube, size_t r, size_t d, size_t b, size_t e, int range_CFAR_window_size,
-                                   int number_range_bin, float noise_value, int range_CFAR_ref_pos,
-                                   float range_CFAR_factor);
-    float get_CFAR_threshold_beam(radar_cuboid &cube, size_t r, size_t d, size_t b, size_t e, int number_azimuth_bin,
-                                  int azimuth_CFAR_window_size, int azimuth_CFAR_ref_pos, float noise_value,
-                                  float azimuth_CFAR_factor);
-    float get_CFAR_threshold_elevation(radar_cuboid &cube, size_t r, size_t d, size_t b, size_t e, int number_elevation_bin,
-                                       int elevation_CFAR_window_size, int elevation_CFAR_ref_pos, float noise_value,
-                                       float elevation_CFAR_factor);//new
-    float
-    correct_windowing_bias_interpolation_range(radar_cuboid &cube, size_t r, size_t d, size_t b, size_t e, int number_range_bin,
-                                               std::vector<float> lookup_range_interpolation, int lookup_size_interpolation,
-                                               float lookup_stepsize_interpolation);
-    float correct_windowing_bias_interpolation_doppler(radar_cuboid &cube, size_t r, size_t d, size_t b,size_t e,
-                                                       int number_doppler_bin,
-                                                       std::vector<float> lookup_doppler_interpolation, int lookup_size_interpolation,
-                                                       float lookup_stepsize_interpolation);
-    float
-    correct_windowing_bias_interpolation_beam(radar_cuboid &cube, size_t r, size_t d, size_t b, size_t e, int number_azimuth_bin,
-                                              std::vector<float> lookup_azimuth_interpolation, int lookup_size_interpolation,
-                                              float lookup_stepsize_interpolation);
-    float
-    correct_windowing_bias_interpolation_elevation(radar_cuboid &cube, size_t r, size_t d, size_t b, size_t e, int number_elevation_bin,
-                                          std::vector<float> lookup_elevation_interpolation, int lookup_size_interpolation,
-                                          float lookup_stepsize_interpolation);//new
-    float get_cube_power_at(radar_cuboid &cube, size_t range, size_t doppler, size_t beam, size_t elevation);
+RawDetection get_detections_by_spectral_interpolation(radar_cuboid& cube, int range, int doppler, int azimuth, int elevation, const model::Profile& profile);
+// raw_detection get_detections_by_spectral_interpolation(radar_cuboid &cube);
 
-#endif //REFLECTIONBASEDRADARMODEL_CFAR_FUNCTIONS_HPP
+bool check_local_max(radar_cuboid& cube,
+                     int range,
+                     int doppler,
+                     int azimuth,
+                     int elevation,
+                     float cut_power,
+                     int number_range_bin,
+                     int number_doppler_bin,
+                     int number_azimuth_bin,
+                     int number_elevation_bin);
+bool check_local_max_range(radar_cuboid& cube, int range, int doppler, int azimuth, int elevation, float cut_power, int number_range_bin);
+bool check_local_max_doppler(radar_cuboid& cube, int range, int doppler, int azimuth, int elevation, float cut_power, int number_doppler_bin);
+bool check_local_max_beam(radar_cuboid& cube, int range, int doppler, int azimuth, int elevation, float cut_power, int number_azimuth_bin);
+bool check_local_max_elevation(radar_cuboid& cube, int range, int doppler, int azimuth, int elevation, float cut_power, int number_elevation_bin);  // new
+float get_cfar_threshold_range(radar_cuboid& cube,
+                               int range,
+                               int doppler,
+                               int azimuth,
+                               int elevation,
+                               int range_cfar_window_size,
+                               int number_range_bin,
+                               float noise_value,
+                               int range_cfar_ref_pos,
+                               float range_cfar_factor);
+float get_cfar_threshold_beam(radar_cuboid& cube,
+                              int range,
+                              int doppler,
+                              int azimuth,
+                              int elevation,
+                              int number_azimuth_bin,
+                              int azimuth_cfar_window_size,
+                              int azimuth_cfar_ref_pos,
+                              float noise_value,
+                              float azimuth_cfar_factor);
+float get_cfar_threshold_elevation(radar_cuboid& cube,
+                                   int range,
+                                   int doppler,
+                                   int azimuth,
+                                   int elevation,
+                                   int number_elevation_bin,
+                                   int elevation_cfar_window_size,
+                                   int elevation_cfar_ref_pos,
+                                   float noise_value,
+                                   float elevation_cfar_factor);  // new
+float correct_windowing_bias_interpolation_range(radar_cuboid& cube,
+                                                 int range,
+                                                 int doppler,
+                                                 int azimuth,
+                                                 int elevation,
+                                                 int number_range_bin,
+                                                 std::vector<float> lookup_range_interpolation,
+                                                 int lookup_size_interpolation,
+                                                 float lookup_stepsize_interpolation);
+float correct_windowing_bias_interpolation_doppler(radar_cuboid& cube,
+                                                   int range,
+                                                   int doppler,
+                                                   int azimuth,
+                                                   int elevation,
+                                                   int number_doppler_bin,
+                                                   std::vector<float> lookup_doppler_interpolation,
+                                                   int lookup_size_interpolation,
+                                                   float lookup_stepsize_interpolation);
+float correct_windowing_bias_interpolation_beam(radar_cuboid& cube,
+                                                int range,
+                                                int doppler,
+                                                int azimuth,
+                                                int elevation,
+                                                int number_azimuth_bin,
+                                                std::vector<float> lookup_azimuth_interpolation,
+                                                int lookup_size_interpolation,
+                                                float lookup_stepsize_interpolation);
+float correct_windowing_bias_interpolation_elevation(radar_cuboid& cube,
+                                                     int range,
+                                                     int doppler,
+                                                     int azimuth,
+                                                     int elevation,
+                                                     int number_elevation_bin,
+                                                     std::vector<float> lookup_elevation_interpolation,
+                                                     int lookup_size_interpolation,
+                                                     float lookup_stepsize_interpolation);  // new
+float get_cube_power_at(radar_cuboid& cube, int range, int doppler, int beam, int elevation);
+
+#endif  // REFLECTIONBASEDRADARMODEL_CFAR_FUNCTIONS_HPP

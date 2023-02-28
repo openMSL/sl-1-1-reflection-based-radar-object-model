@@ -6,19 +6,22 @@
 #ifndef OSMPSENSORFRAMEWORK_PROFILE_LIST_HPP
 #define OSMPSENSORFRAMEWORK_PROFILE_LIST_HPP
 
-#include <model/profiles/profile.hpp>
 #include <string>
+
+#include <model/profiles/profile.hpp>
 
 /* TODO add further profiles here */
 #include <model/profiles/profile_ReflectionRadar.hpp>
 
-bool CFrameworkPackaging::try_load_profile(const std::string &name) {
+bool CFrameworkPackaging::try_load_profile(const std::string& name)
+{
     /* TODO add further profile generators here */
-    if (name == "ReflectionRadar") {
+    if (name == "ReflectionRadar")
+    {
         profile = model::profile::ReflectionRadar::generate();
         return true;
     }
     return false;
 }
 
-#endif //OSMPSENSORFRAMEWORK_PROFILE_LIST_HPP
+#endif  // OSMPSENSORFRAMEWORK_PROFILE_LIST_HPP

@@ -12,7 +12,7 @@
 
 namespace model::profile {
     struct Profile {
-        uint32_t antenna_diagram_discretization;
+        int antenna_diagram_discretization;
         std::vector<double> max_min_angle_azimuth;
         std::vector<double> max_min_angle_elevation;
         std::vector<double> antenna_diagram_azimuth_response;
