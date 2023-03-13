@@ -283,10 +283,6 @@ Currently, all information on model input is passed to the output.
 
 (Please note that sources are not packed into the FMU at the moment.)
 
-## Licensing
-
-**Please read file [COPYING](COPYING), which is located in the project root, carefully.**
-
 ## Credits
 
 M. F. Holder, C. Linnhoff, P. Rosenberger, and H. Winner, [*“The Fourier Tracing Approach for Modeling Automotive Radar Sensors,”*](https://ieeexplore.ieee.org/document/8768113) 20th International Radar Symposium (IRS), Ulm, Germany, 26-28 June 2019
