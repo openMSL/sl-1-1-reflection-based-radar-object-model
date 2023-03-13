@@ -4,4 +4,3 @@ This strategy performs the fusion of the point clouds from input sensors as part
 
 NOTE:
 This strategy needs transformation-functions from ../transformation-functions!
-
