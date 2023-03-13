@@ -230,7 +230,7 @@ Currently, all information on model input is passed to the output.
 
 ### Clone with Submodules, Build, and Install in Windows 10
 
-1. Clone this repository _with submodules_:
+1. Clone this repository *with submodules*:
 
    ```bash
    git clone git@github.com:openMSL/reflection_based_radar_object_model.git --recurse-submodules
@@ -251,8 +251,8 @@ Currently, all information on model input is passed to the output.
    - Check your version via `protoc --version`. It should output: `libprotoc 3.0.0`
    - If needed, you can install it via `sudo apt-get install libprotobuf-dev protobuf-compiler`
    - or from source:
-     - Download it from https://github.com/protocolbuffers/protobuf/releases/tag/v3.0.0 and extract the archive.
-     - Try to run `./autogen.sh`, if it failes, download the gmock-1.7.0.zip from https://pkgs.fedoraproject.org/repo/pkgs/gmock/gmock-1.7.0.zip/073b984d8798ea1594f5e44d85b20d66/gmock-1.7.0.zip, extract it into the protobuf folder and rename the gmock-1.7.0 folter to gmock.
+     - Download [source](https://github.com/protocolbuffers/protobuf/releases/tag/v3.0.0) and extract the archive.
+     - Try to run `./autogen.sh`, if it fails, download the [gmock-1.7.0.zip](https://pkgs.fedoraproject.org/repo/pkgs/gmock/gmock-1.7.0.zip/073b984d8798ea1594f5e44d85b20d66/gmock-1.7.0.zip), extract it into the protobuf folder and rename the gmock-1.7.0 folter to gmock.
      - Proceed with the installation with
 
      ```bash
@@ -263,7 +263,7 @@ Currently, all information on model input is passed to the output.
 
 ### Clone with Submodules, Build, and Install in Ubuntu 18.04 / 20.04
 
-1. Clone this repository _with submodules_:
+1. Clone this repository *with submodules*:
 
     ```bash
     git clone git@github.com:openMSL/reflection_based_radar_object_model.git --recurse-submodules
@@ -291,7 +291,7 @@ Currently, all information on model input is passed to the output.
 
 M. F. Holder, C. Linnhoff, P. Rosenberger, and H. Winner, [*“The Fourier Tracing Approach for Modeling Automotive Radar Sensors,”*](https://ieeexplore.ieee.org/document/8768113) 20th International Radar Symposium (IRS), Ulm, Germany, 26-28 June 2019
 
-If you find our work useful in your research, please consider citing: 
+If you find our work useful in your research, please consider citing:
 
 ```bibtex
 @INPROCEEDINGS{holder2019,
@@ -303,12 +303,11 @@ If you find our work useful in your research, please consider citing:
 }
 ```
 
-This work received funding from the research project 
-"[SET Level](https://setlevel.de/)" of the [PEGASUS ](https://pegasus-family.de) project family, promoted by the German Federal Ministry for Economic Affairs and Energy based on a decision of the German Bundestag.
+This work received funding from the research project
+"[SET Level](https://setlevel.de/)" of the [PEGASUS](https://pegasus-family.de) project family, promoted by the German Federal Ministry for Economic Affairs and Energy based on a decision of the German Bundestag.
 | SET Level                                                                                                | PEGASUS Family                                                                                                       | BMWi                                                                                                                                                                                 |
 |----------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | <a href="https://setlevel.de"><img src="https://setlevel.de/assets/logo-setlevel.svg" width="100" /></a> | <a href="https://pegasus-family.de"><img src="https://setlevel.de/assets/logo-pegasus-family.svg" width="100" /></a> | <a href="https://www.bmwi.de/Redaktion/DE/Textsammlungen/Technologie/fahrzeug-und-systemtechnologien.html"><img src="https://setlevel.de/assets/logo-bmwi-en.svg" width="100" /></a> |
-
 
 Thanks to all contributors of the following libraries:
 
