@@ -175,6 +175,7 @@ Possible values are "flat" or "structured".
   - sensor_view_configuration.radar_sensor_view_configuration.rx_antenna_diagram
 
 ### Required Fields in OSI3 Sensor_View Filled at the Input by the Simulation Tool
+
 - Ground Truth object list
   - sensor_view.mounting_position
   - sensor_view.global_ground_truth.timestamp
@@ -204,11 +205,7 @@ Possible values are "flat" or "structured".
 ### Additionally Filled Fields in OSI3 Sensor_Data by the Sensor Model
 
 ---
-
-**NOTE**
-
 Currently, all information on model input is passed to the output.
-
 ---
 
 - sensor_data.timestamp
@@ -240,7 +237,7 @@ Currently, all information on model input is passed to the output.
 
 1. Clone this repository <ins>with submodules</ins>:
    ```bash
-   $ git clone git@github.com:openMSL/reflection_based_radar_object_model.git --recurse-submodules
+   git clone git@github.com:openMSL/reflection_based_radar_object_model.git --recurse-submodules
    ```
 2. Build the model in [MSYS-2020](doc/build-instructions/install_model_Win64_MSYS-2020.md) or [Visual Studio 2017](doc/build-instructions/install_model_Win64_VS2017.md)
 3. Take FMU from `FMU_INSTALL_DIR`
@@ -259,26 +256,26 @@ Currently, all information on model input is passed to the output.
    * or from source:
      * Download it from https://github.com/protocolbuffers/protobuf/releases/tag/v3.0.0 and extract the archive.
      * Try to run `./autogen.sh`, if it failes, download the gmock-1.7.0.zip from https://pkgs.fedoraproject.org/repo/pkgs/gmock/gmock-1.7.0.zip/073b984d8798ea1594f5e44d85b20d66/gmock-1.7.0.zip, extract it into the protobuf folder and rename the gmock-1.7.0 folter to gmock.
-     * Proceed with the install with
+     * Proceed with the installation with
      ```bash
-     $ make
-     $ sudo make install
-     $ sudo ldconfig # refresh shared library cache.
+     make
+     sudo make install
+     sudo ldconfig # refresh shared library cache.
      ```
 
 ### Clone with Submodules, Build, and Install in Ubuntu 18.04 / 20.04
 
 1. Clone this repository <ins>with submodules</ins>:
     ```bash
-    $ git clone git@github.com:openMSL/reflection_based_radar_object_model.git --recurse-submodules
+    git clone git@github.com:openMSL/reflection_based_radar_object_model.git --recurse-submodules
     ```
 2. Build the model by executing in the extracted project root directory:
     ```bash
-    $ mkdir cmake-build
-    $ cd cmake-build
+    mkdir cmake-build
+    cd cmake-build
     # If FMU_INSTALL_DIR is not set, CMAKE_BINARY_DIR is used
-    $ cmake -DCMAKE_BUILD_TYPE=Release -DFMU_INSTALL_DIR:PATH=/tmp ..
-    $ make -j N_JOBS
+    cmake -DCMAKE_BUILD_TYPE=Release -DFMU_INSTALL_DIR:PATH=/tmp ..
+    make -j N_JOBS
     ```
 3. Take FMU from `FMU_INSTALL_DIR`
 
@@ -289,11 +286,12 @@ Currently, all information on model input is passed to the output.
 **Please read file [COPYING](COPYING), which is located in the project root, carefully.**
 
 ## Credits
+
 M. F. Holder, C. Linnhoff, P. Rosenberger, and H. Winner, [*“The Fourier Tracing Approach for Modeling Automotive Radar Sensors,”*](https://ieeexplore.ieee.org/document/8768113) 20th International Radar Symposium (IRS), Ulm, Germany, 26-28 June 2019
 
 If you find our work useful in your research, please consider citing: 
 
-```
+```bibtex
 @INPROCEEDINGS{holder2019,
   author={Holder, Martin and Linnhoff, Clemens and Rosenberger, Philipp and Winner, Hermann},
   booktitle={2019 20th International Radar Symposium (IRS)}, 
