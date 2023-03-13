@@ -51,7 +51,7 @@ jobs:
 
     - name: Copy Model FMU
       working-directory: build
-      run: cp HelloWorldSensor.fmu /tmp/model_fmu/HelloWorldSensor.fmu
+      run: cp ReflectionBasedRadarModel.fmu /tmp/model_fmu/ReflectionBasedRadarModel.fmu
 
     - name: Cache Model FMU
       id: cache-model-fmu
