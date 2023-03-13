@@ -1,8 +1,7 @@
 # SL 1-1 Reflection Based Radar Object Model
 
-![SPDX workflow](https://github.com/openMSL/sl-1-1-reflection-based-radar-object-model/actions/workflows/spdx.yml/badge.svg)
-![CPP Linter workflow](https://github.com/openMSL/sl-1-1-reflection-based-radar-object-model/actions/workflows/cpp-linter.yml/badge.svg)
-![Build workflow](https://github.com/openMSL/sl-1-1-reflection-based-radar-object-model/actions/workflows/build.yml/badge.svg)
+[![Credibility Assessment Level 0](../../actions/workflows/cl0.yml/badge.svg)](https://github.com/openMSL/sl-1-5-sensor-model-testing/blob/main/doc/test_architecture.md#cl-0-license-check)
+[![Credibility Assessment Level 1](../../actions/workflows/cl1.yml/badge.svg)](https://github.com/openMSL/sl-1-5-sensor-model-testing/blob/main/doc/test_architecture.md#cl-1-code-verification)
 
 <img align="right" src="https://gitlab.com/tuda-fzd/perception-sensor-modeling/object-based-generic-perception-object-model/uploads/17c84e9ec0acf0fac2e35855f038ad0b/fzdlogo.jpg" width="100" />
 
@@ -67,17 +66,15 @@ The profile to be loaded for simulation is set via a model parameter defined in 
 The first name in `src/model/profiles/profile_list.conf` is taken as default.
 If you would like to have a different one or if your simulation master does not support the configuration of model parameters, you have to adapt the *start* value of the parameter `profile` in `src/osmp/modelDescription.in.xml`.
 
-
 ### Sensor Parameters
 
 | Parameter                         | Description                                                                                                                       |
 | --------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
 | sensor_view_configuration*        | Update cycle, range, field of view, physical mounting position w.r.t. center of rear axle                                         |
 | radar_sensor_view_configuration** | Emitter's mounting position w.r.t. center of rear axle, emitter_frequency, tx/rx_antenna_diagram                           |
-<dl>
-  <dd>*sensor_view_configuration is defined for every physical sensor system mounted on the ego car</dd>
-  <dd>**radar_sensor_view_configuration is defined for every emitter located within every sensor system</dd>
-</dl>
+
+*sensor_view_configuration is defined for every physical sensor system mounted on the ego car<br>
+**radar_sensor_view_configuration is defined for every emitter located within every sensor system
 
 ### Detection Sensing Parameters
 
@@ -94,7 +91,6 @@ If you would like to have a different one or if your simulation master does not 
 | azimuth_window_function        | Window function lookup-table for azimuth                                                                  |
 | window_data_per_bin            | Data points per bin in the look-up table                                                                  |
 | bin_affect_range               | Number of bins that are effected by the windowing function                                                |
-
 
 ### CFAR Peakdetection parameters
 
@@ -176,6 +172,7 @@ Possible values are "flat" or "structured".
   - sensor_view_configuration.radar_sensor_view_configuration.rx_antenna_diagram
 
 ### Required Fields in OSI3 Sensor_View Filled at the Input by the Simulation Tool
+
 - Ground Truth object list
   - sensor_view.mounting_position
   - sensor_view.global_ground_truth.timestamp
@@ -204,13 +201,7 @@ Possible values are "flat" or "structured".
 
 ### Additionally Filled Fields in OSI3 Sensor_Data by the Sensor Model
 
----
-
-**NOTE**
-
 Currently, all information on model input is passed to the output.
-
----
 
 - sensor_data.timestamp
 - sensor_data.moving_object_header.measurement_time
@@ -234,67 +225,71 @@ Currently, all information on model input is passed to the output.
 
 ### Install Dependencies in Windows 10
 
-1. Install cmake from https://github.com/Kitware/CMake/releases/download/v3.20.3/cmake-3.20.3-windows-x86_64.msi
+1. Install [cmake](https://github.com/Kitware/CMake/releases/download/v3.20.3/cmake-3.20.3-windows-x86_64.msi)
 2. Install protobuf for [MSYS-2020](doc/build-instructions/install_protobuf_Win64_MSYS-2020.md) or [Visual Studio 2017](doc/build-instructions/install_protobuf_Win64_VS2017.md)
 
 ### Clone with Submodules, Build, and Install in Windows 10
 
-1. Clone this repository <ins>with submodules</ins>:
+1. Clone this repository *with submodules*:
+
    ```bash
-   $ git clone git@github.com:openMSL/reflection_based_radar_object_model.git --recurse-submodules
+   git clone git@github.com:openMSL/reflection_based_radar_object_model.git --recurse-submodules
    ```
+
 2. Build the model in [MSYS-2020](doc/build-instructions/install_model_Win64_MSYS-2020.md) or [Visual Studio 2017](doc/build-instructions/install_model_Win64_VS2017.md)
 3. Take FMU from `FMU_INSTALL_DIR`
 
-    (Please note that sources are not packed into the FMU at the moment.)
+(Please note that sources are not packed into the FMU at the moment.)
 
 ## Build Instructions in Ubuntu 18.04 / 20.04
 
 ### Install Dependencies in Ubuntu 18.04 / 20.04
 
 1. Install cmake 3.12
-   * as told in [these install instructions](doc/build-instructions/install_cmake_ubuntu_3-12.md)
+   - as told in [these install instructions](doc/build-instructions/install_cmake_ubuntu_3-12.md)
 2. Install protobuf 3.0.0:
-   * Check your version via `protoc --version`. It should output: `libprotoc 3.0.0`
-   * If needed, you can install it via `sudo apt-get install libprotobuf-dev protobuf-compiler`
-   * or from source:
-     * Download it from https://github.com/protocolbuffers/protobuf/releases/tag/v3.0.0 and extract the archive.
-     * Try to run `./autogen.sh`, if it failes, download the gmock-1.7.0.zip from https://pkgs.fedoraproject.org/repo/pkgs/gmock/gmock-1.7.0.zip/073b984d8798ea1594f5e44d85b20d66/gmock-1.7.0.zip, extract it into the protobuf folder and rename the gmock-1.7.0 folter to gmock.
-     * Proceed with the install with
+   - Check your version via `protoc --version`. It should output: `libprotoc 3.0.0`
+   - If needed, you can install it via `sudo apt-get install libprotobuf-dev protobuf-compiler`
+   - or from source:
+     - Download [source](https://github.com/protocolbuffers/protobuf/releases/tag/v3.0.0) and extract the archive.
+     - Try to run `./autogen.sh`, if it fails, download the [gmock-1.7.0.zip](https://pkgs.fedoraproject.org/repo/pkgs/gmock/gmock-1.7.0.zip/073b984d8798ea1594f5e44d85b20d66/gmock-1.7.0.zip), extract it into the protobuf folder and rename the gmock-1.7.0 folter to gmock.
+     - Proceed with the installation with
+
      ```bash
-     $ make
-     $ sudo make install
-     $ sudo ldconfig # refresh shared library cache.
+     make
+     sudo make install
+     sudo ldconfig # refresh shared library cache.
      ```
 
 ### Clone with Submodules, Build, and Install in Ubuntu 18.04 / 20.04
 
-1. Clone this repository <ins>with submodules</ins>:
+1. Clone this repository *with submodules*:
+
     ```bash
-    $ git clone git@github.com:openMSL/reflection_based_radar_object_model.git --recurse-submodules
+    git clone git@github.com:openMSL/reflection_based_radar_object_model.git --recurse-submodules
     ```
+
 2. Build the model by executing in the extracted project root directory:
+
     ```bash
-    $ mkdir cmake-build
-    $ cd cmake-build
+    mkdir cmake-build
+    cd cmake-build
     # If FMU_INSTALL_DIR is not set, CMAKE_BINARY_DIR is used
-    $ cmake -DCMAKE_BUILD_TYPE=Release -DFMU_INSTALL_DIR:PATH=/tmp ..
-    $ make -j N_JOBS
+    cmake -DCMAKE_BUILD_TYPE=Release -DFMU_INSTALL_DIR:PATH=/tmp ..
+    make -j N_JOBS
     ```
+
 3. Take FMU from `FMU_INSTALL_DIR`
 
-    (Please note that sources are not packed into the FMU at the moment.)
-
-## Licensing
-
-**Please read file [COPYING](COPYING), which is located in the project root, carefully.**
+(Please note that sources are not packed into the FMU at the moment.)
 
 ## Credits
+
 M. F. Holder, C. Linnhoff, P. Rosenberger, and H. Winner, [*“The Fourier Tracing Approach for Modeling Automotive Radar Sensors,”*](https://ieeexplore.ieee.org/document/8768113) 20th International Radar Symposium (IRS), Ulm, Germany, 26-28 June 2019
 
-If you find our work useful in your research, please consider citing: 
+If you find our work useful in your research, please consider citing:
 
-```
+```bibtex
 @INPROCEEDINGS{holder2019,
   author={Holder, Martin and Linnhoff, Clemens and Rosenberger, Philipp and Winner, Hermann},
   booktitle={2019 20th International Radar Symposium (IRS)}, 
@@ -304,12 +299,11 @@ If you find our work useful in your research, please consider citing:
 }
 ```
 
-This work received funding from the research project 
-"[SET Level](https://setlevel.de/)" of the [PEGASUS ](https://pegasus-family.de) project family, promoted by the German Federal Ministry for Economic Affairs and Energy based on a decision of the German Bundestag.
+This work received funding from the research project
+"[SET Level](https://setlevel.de/)" of the [PEGASUS](https://pegasus-family.de) project family, promoted by the German Federal Ministry for Economic Affairs and Energy based on a decision of the German Bundestag.
 | SET Level                                                                                                | PEGASUS Family                                                                                                       | BMWi                                                                                                                                                                                 |
 |----------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | <a href="https://setlevel.de"><img src="https://setlevel.de/assets/logo-setlevel.svg" width="100" /></a> | <a href="https://pegasus-family.de"><img src="https://setlevel.de/assets/logo-pegasus-family.svg" width="100" /></a> | <a href="https://www.bmwi.de/Redaktion/DE/Textsammlungen/Technologie/fahrzeug-und-systemtechnologien.html"><img src="https://setlevel.de/assets/logo-bmwi-en.svg" width="100" /></a> |
-
 
 Thanks to all contributors of the following libraries:
 
